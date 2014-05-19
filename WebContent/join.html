@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	#join_form{
+		width : 350px;
+	}
+	label[for^=join]{
+		width : 150px;
+		float : left;
+	}
+	input[id^=join]{
+		display : block;
+	}
+	
+	li{
+		display : inline;
+	}
+	
+</style>
+</head>
+<body>
+<div id="join_form">
+<form action="#" method="post">
+	<fieldset>
+		<label for="join_id">아이디</label><input type="text" id="join_id" name="join_id" required/>
+		<label for="join_password">비밀번호</label><input type="password" id="join_password" name="join_password" required/>
+		<label for="join_password2">비밀번호 재입력</label><input type="password" id="join_password2" name="join_password2" required/>
+		<label for="join_name">이름</label><input type="text" id="join_name" name="join_name" required/>
+		<label for="join_email">이메일</label><input type="email" id="join_email" name="join_email" required/>
+		<h5>관심사항</h5>
+		<ul>
+			<li>
+				<label for="programming">프로그래밍</label><input type="checkbox" id="programming" value="programming"/>
+			</li>
+			<li>
+				<label for="design">디자인</label><input type="checkbox" value="design" id="design"/>
+			</li>
+			<li>
+				<label for="math">수학</label><input type="checkbox" value="math" id="math"/>
+			</li>
+		</ul>
+		<button onclick="history.back();">뒤로가기</button>
+		<input type="submit" value="가입하기"/>
+	</fieldset>
+</form>
+</div>
+</body>
+</html>
