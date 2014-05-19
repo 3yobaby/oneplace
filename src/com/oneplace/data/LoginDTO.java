@@ -1,4 +1,4 @@
-package com.oneplace.sampledata.action;
+package com.oneplace.data;
 
 import java.sql.Date;
 

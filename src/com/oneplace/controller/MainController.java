@@ -14,9 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.oneplace.util.*;
-/**
- * Servlet implementation class MainController
- */
+
+
 @WebServlet("*.do")
 public class MainController extends HttpServlet {
 	private static final long serialVersionUID = 1L;

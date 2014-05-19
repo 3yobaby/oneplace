@@ -1,8 +1,8 @@
-package com.oneplace.sampledata.cafe;
+package com.oneplace.data;
 
 import java.sql.Date;
 
-import com.oneplace.sampledata.policy.Public;
+import com.oneplace.policy.Public;
 import com.oneplace.util.DTO;
 
 /*

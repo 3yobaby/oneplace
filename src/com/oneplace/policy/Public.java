@@ -1,4 +1,4 @@
-package com.oneplace.sampledata.policy;
+package com.oneplace.policy;
 /*
  * 0 모두공개
  * 1 관리자까지 공개
