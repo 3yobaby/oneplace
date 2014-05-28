@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	body{
+		padding : 100px;
+		text-align : center;
+	}
+	input{
+		display : block;
+		width : 40em;
+		height : 20px;
+		margin-bottom : 10px;
+	}
+	fieldset {
+		border-color : #eee;
+		display : inline-block;
+	}
+	input[name=join_tel1]{
+		size : 3;
+	}
+</style>
+</head>
+<body>
+<div id="join_form">
+<form action="join.do" method="post">
+	<fieldset>
+		<input type="text" name="join_id" placeholder="아이디" required/>
+		<input type="password" name="join_id" placeholder="비밀번호" required/>
+		<input type="password" name="join_id2" placeholder="비밀번호 재확인" required/>
+		<input type="text" name="join_name" placeholder="이름" required/>
+		<input type="email" name="join_email" placeholder="이메일"/>
+		<input type="tel" name="join_tel1" placeholder="전화번호" />
+		<input type="submit" value="가입하기" />
+	</fieldset>
+</form>
+</div>
+</body>
+</html>

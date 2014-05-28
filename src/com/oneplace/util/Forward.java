@@ -1,9 +1,9 @@
 package com.oneplace.util;
 
 public class Forward {
-	private String path;
+	private String path = null;
 	private boolean forwarding = false;
-	private Object data = null;
+	private String json;
 	public String getPath() {
 		return path;
 	}
@@ -16,10 +16,10 @@ public class Forward {
 	public boolean isForwarding(){
 		return forwarding;
 	}
-	public Object getData() {
-		return data;
+	public String getJson() {
+		return json;
 	}
-	public void setData(Object data) {
-		this.data = data;
+	public void setJson(String json) {
+		this.json = json;
 	}
 }

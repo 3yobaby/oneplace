@@ -1,27 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="com.oneplace.data.Member"%>
 <!DOCTYPE html">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<script src="jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="jquery-1.11.1.min.js" type="text/javascript"></script>
 <style type="text/css">
 	body{
 		border : solid;
+		padding : 20px;
 	}
 	aside {
 		width : 200px;
 		position : absolute;
-		right : 20px;		
+		right : 20px;
 	}
-	fieldset{
 
-	}
-	footer{
-		position : absolute;
-		bottom : 10px;
-	}
 	li{
 		list-style-type : none;
 	}
@@ -42,32 +38,51 @@
 		overflow : hidden;
 	}
 	
+	nav#group_section{
+		margin : 5px;
+	}
+	
+	nav#group_section > *{
+		margin : 30px;
+	}
+	footer{
+		position : absolute;
+		width : 100%;
+		bottom : 10px;
+		text-align : center;
+	}
+	footer *{
+		display : inline;
+	}
 </style>
 <script>
-	var groups = '';
 	$(document).ready(function(){
-		// 그룹 구분 선택
-		$('a[id^=select_group]').bind('click',function(){
-			$('#groups_selected').text(this.text);
-			groups = this.text;
-		});
-		
-		// 클릭 정보를 넘긴다 - 링크하려고
-		$('a[class^=group]').bind('click', function(){
-			var $group = $(this);
-			var className = $group.attr('class');
-			var content = this.text;
-			alert(content);
-		});
+	
 	});
-	
-	function logout(){
-		location.href = './';
+	var selected_tap = 'select_group_all';
+	var result;
+	function sel_group(val){
+		switch(val){
+		case 'select_group_all':
+		case 'select_group_new':
+		case 'select_group_join':
+		case 'select_group_my':
+			$.get('cafeSearch.ajax?select=' + val , function(data){
+				result = $.parseJSON(data);
+				$.each(result, function(){
+					var temp = this.title + this.name + this.date;
+					$('#ajax_result').text($('#ajax_result').text() + temp);
+				});
+			});
+			break;
+		}
 	}
 	
-	function modify(){
-		alert('정보수정 클릭');
+	// 선택된 그룹 선택 탭 클레스 추가
+	function select_group(val){
+		
 	}
+
 </script>
 </head>
 <body>
@@ -75,24 +90,19 @@
 	<!-- 모임 이미지 등등 -->
 </header>
 	<!-- 로그인 정보 출력 -->
-	<aside id="info_member">
-		<fieldset>
-			<legend>로그인 정보</legend>
-			<%= request.getAttribute("login_name") %>님 반갑습니다!<br>
-			<button onClick="modify();">정보수정</button>
-			<button onclick="logout();">로그아웃</button>
-		</fieldset>
-	</aside>
+<aside id="info_member">
+	<jsp:include page="info_member.jsp"></jsp:include>
+</aside>
 	<!-- 전체 그룹 표시  -->
-	<section id="groups">
-		<fieldset>
-		<nav id="group_section">
-			<a id="select_group_all">전체 그룹</a>
-			<a id="select_group_new">새 그룹</a>
-			<a id="select_group_join">가입한 그룹</a>
-		</nav>
-		<h3 id="groups_selected">전체 그룹</h3>
-		<label for="search">검색</label><input id="search" type="text" autofocus="autofocus"/><br>
+<section id="groups">
+	<nav id="group_section">
+		<a id="select_group_all" onclick="sel_group(id)">전체 카페</a>
+		<a id="select_group_new" onclick="sel_group(id)">새 카페</a>
+		<a id="select_group_join" onclick="sel_group(id)">가입한 카페</a>
+		<a id="select_group_my" onclick="sel_group(id)">내 카페</a>
+	</nav>
+	<input id="search" type="text" autofocus="autofocus"/><br>
+	<div id="cafe_list">
 		<ul>
 			<li id="groups_group1">
 				<a class="group_title">자바를 공부하는 사람들의 모임 블라블라블라블라</a>
@@ -105,14 +115,14 @@
 				<a class="group_date">14.01.27</a>
 			</li>
 		</ul>		
-		</fieldset>
-	</section>
+	</div>
+	<div id="ajax_result">
+	
+	</div>
+</section>
 <footer>
-<fieldset>
 	<!-- 만든이 정보 혹은 바로가기 링크 -->
-	만든이 : 김희택
-	<address>010-6688-2199</address>
-</fieldset>
+	만든이 : 김희택 <address>010-6688-2199</address>
 </footer>
 </body>
 </html>

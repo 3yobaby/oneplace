@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery-1.11.1.min.js"></script>
+<script>
+	$(document).ready(function(){
+		
+	});	
+	var ajax;
+	function clk(){
+		if(window.XMLHttpRequest){
+			ajax = new XMLHttpRequest();
+		}else if(window.ActiveXObject){
+			ajax = new ActiveXObject("Msxml2.XMLHTTP");
+		}else{
+			throw new Error("지원하지 않습니다");
+		}
+		ajax.open('get','http://localhost:8999/OnePlace/hi.ajax');
+		ajax.onreadystatechange = onchange;
+		ajax.send(null);
+	}
+	
+	function onchange(){
+		if(ajax.readyState == 4){
+			if(ajax.status >=200 && ajax.status < 300 ){
+				$('#result').text(ajax.responseText);
+			}
+		}
+	}
+</script>
+</head>
+<body>
+<button onclick="clk();">click</button>
+<div id="result"></div>
+</body>
+</html>
