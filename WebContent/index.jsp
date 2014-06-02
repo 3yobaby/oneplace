@@ -49,7 +49,7 @@
 
 	footer{
 		background-color : #aaaaaa;
-		position : absolute;
+		position : fixed;
 		bottom : 0px;
 		width : 99%;
 		text-align : center;

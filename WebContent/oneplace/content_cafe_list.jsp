@@ -8,6 +8,18 @@
 	#navigation_groups #group_section > *{
 		margin : 30px;
 	}
+	
+	.title{
+		width : 700px;
+	}
+	
+	.name{
+	
+	}
+	
+	.date{
+	
+	}
 </style>
 <script>
 	var selected_tap = 'select_group_all';
@@ -19,11 +31,16 @@
 		case 'select_group_join':
 		case 'select_group_my':
 			$.get('cafeSearch.ajax?select=' + val , function(data){
+				$('tbody').empty();
 				$.each($.parseJSON(data),function(key, value){
 					var title = value.title;
 					var name = value.name;
 					var date = value.date;
-					console.log(title + name + date);
+					$('tbody').append('<tr>');
+					$('tbody').append('<td class="title">'+title + '</td>');
+					$('tbody').append('<td class="name">'+name + '</td>');
+					$('tbody').append('<td class="date">'+date + '</td>');
+					$('tbody').append('</tr>');
 				});
 				
 			});
@@ -46,5 +63,9 @@
 	<input id="search" type="text" autofocus="autofocus" placeholder="검색어를 입력하세요"/>
 </div>
 <div id="search_result">
-	
+	<table border="1">
+		<tbody>
+			
+		</tbody>
+	</table>
 </div>

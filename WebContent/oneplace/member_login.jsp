@@ -7,7 +7,7 @@
 </style>
 <script>
 	function join_form_join(){
-		$.get('oneplace/content_join_form.jsp',function(){
+		$.get('oneplace/content_join_form.jsp',function(data){
 			$(contents).html(data);
 		});
 	}
