@@ -19,14 +19,13 @@ public class CafeSearchAjax extends Ajax{
 	}
 
 	@Override
-	public Forward execute(String command, HttpServletRequest request,
+	public void execute(String command, HttpServletRequest request,
 			HttpServletResponse response) {
 		switch(command){
 		case "/cafeSearch.ajax":
 			search(request, response);
 			break;
 		}
-		return forward;
 	}
 	
 	@SuppressWarnings("unchecked")

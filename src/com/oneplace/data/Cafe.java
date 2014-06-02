@@ -2,7 +2,6 @@ package com.oneplace.data;
 
 import java.sql.Date;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.oneplace.util.DTO;

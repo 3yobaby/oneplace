@@ -1,5 +1,8 @@
 package com.oneplace.controller;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,23 +31,32 @@ public class OnePlaceController {
 		case "/login.do":
 			forward = memberAction.execute(command, request, response);
 			break;
+		case "/logout.do":
+			forward = memberAction.execute(command, request, response);
+			break;
 		}
 		return forward;
 	}
 
-	public Forward executeAjax(String command, HttpServletRequest request,
+	public void executeAjax(String command, HttpServletRequest request,
 			HttpServletResponse response) {
-		Forward forward = null;
+		String path = null;
 		switch(command){
 		case "/cafeSearch.ajax":
-			forward = cafeSearchAjax.execute(command, request, response);
-			forward.setPath("WEB-INF/session/search_result.jsp");
+			cafeSearchAjax.execute(command, request, response);
+			path = "WEB-INF/session/search_result.jsp";
 			break;
-		case "/logout.ajax":
 		case "/join.ajax":
-			forward = memberAjax.execute(command, request, response);
+			memberAjax.execute(command, request, response);
+			path = "content_join_form.jsp";
 			break;
 		}
-		return forward;
+		try {
+			request.getRequestDispatcher(path).forward(request, response);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -69,7 +69,7 @@
 <header id="header">
 	<h1>header</h1>
 </header>
-<aside id="membership_info">
+<aside id="member_info">
 	<jsp:include page="oneplace/member_info.jsp"></jsp:include>
 </aside>
 <section id="contents">

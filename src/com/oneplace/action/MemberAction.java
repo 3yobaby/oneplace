@@ -22,8 +22,16 @@ public class MemberAction extends Action{
 		case "/login.do":
 			login(request, response);
 			break;
+		case "/logout.do":
+			logout(request, response);
+			break;
 		}
 		return forward;
+	}
+
+	private void logout(HttpServletRequest request, HttpServletResponse response) {
+		app.logout(request.getSession().getId());
+		request.getSession().setAttribute("member", null);
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) {

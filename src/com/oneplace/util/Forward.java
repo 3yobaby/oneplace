@@ -1,7 +1,7 @@
 package com.oneplace.util;
 
 public class Forward {
-	private String path = null;
+	private String path;
 	private boolean forwarding = false;
 	private String json;
 	public String getPath() {
