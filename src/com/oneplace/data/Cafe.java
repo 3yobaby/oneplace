@@ -2,6 +2,9 @@ package com.oneplace.data;
 
 import java.sql.Date;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.oneplace.util.DTO;
 
 /*
@@ -22,6 +25,8 @@ public class Cafe implements DTO{
 	private boolean search;
 	private boolean isValid;
 	private Date date;
+	private String detail;
+	private String managerName;
 	public int getKey() {
 		return key;
 	}
@@ -64,6 +69,26 @@ public class Cafe implements DTO{
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
 	
+	public String getDetail() {
+		return detail;
+	}
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
+	}
+	public String getManagerName() {
+		return managerName;
+	}
 	
+	@SuppressWarnings("unchecked")
+	public JSONObject getJson() {
+		JSONObject json = new JSONObject();
+		json.put("title", this.title);
+		json.put("name", this.managerName);
+		json.put("date", this.date.toString());
+		return json;
+	}
 }

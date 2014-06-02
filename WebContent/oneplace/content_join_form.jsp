@@ -1,31 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <style type="text/css">
-	body{
-		padding : 100px;
-		text-align : center;
-	}
-	input{
-		display : block;
+	#join_form input{
 		width : 40em;
 		height : 20px;
 		margin-bottom : 10px;
 	}
-	fieldset {
+	#join_form fieldset {
 		border-color : #eee;
-		display : inline-block;
-	}
-	input[name=join_tel1]{
-		size : 3;
 	}
 </style>
-</head>
-<body>
 <div id="join_form">
-<form action="join.do" method="post">
+<form action="join.ajax" method="post">
 	<fieldset>
 		<input type="text" name="join_id" placeholder="아이디" required/>
 		<input type="password" name="join_id" placeholder="비밀번호" required/>
@@ -37,5 +23,3 @@
 	</fieldset>
 </form>
 </div>
-</body>
-</html>

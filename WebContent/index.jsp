@@ -1,49 +1,82 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+	pageEncoding="UTF-8"%>
+<%@page import="com.oneplace.data.Member"%>
+<!DOCTYPE html">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script src="jquery-1.11.1.min.js" type="text/javascript"></script>
+<script>
+	document.createElement("abc");
+</script>
 <style type="text/css">
-body {
-	padding : 100px;
-	text-align : center;
-}
-#join {
-	float : left;
-}
+	/* a[class=group_title]{
+		float : left;
+		width : 15em;
+		height : 1em;
+		text-overflow : ellipsis;
+		overflow : hidden;
+	}
+	a[class=group_user]{
+		float : left;
+		width : 5em;
+		height : 1em;
+		text-overflow : ellipsis;
+		overflow : hidden;
+	} */
+	
+	body {
+		padding : 50px;
+	}
+	
+	header {
+		background-color : #aaaaaa;
+		width : 100%;
+		height : 100px;
+		margin-bottom : 10px;
+	}
+	
+	section {
+		height : 500px;
+	}
+	
+	aside {
+		height : 800px;
+		width : 200px;
+		float : left;
+	}
 
-#find{
-	color : #bbb;
-	float : right;
-}
-fieldset{
-	border-color : #aaa;
-	display : inline-block;
-}
-#login_id, #login_pass{
-	float : left;
-	width : 100%;
-}
-#login_btn{
-	width : 100%;
-}
+	footer{
+		background-color : #aaaaaa;
+		position : absolute;
+		bottom : 0px;
+		width : 99%;
+		text-align : center;
+	}
+	footer *{
+		display : inline;
+	}
 </style>
 <script>
+	$(document).ready(function(){
+		
+	});
 
 </script>
 </head>
 <body>
-<h1>Welcome!</h1>
-<fieldset>
-		<a id="join" href="join_form.html">회원가입</a>
-		<a id="find" href="inquiry.html">아이디/비밀번호 찾기</a><br>
-	<form method="get" action="login.do">
-		<input type="text" id="login_id" name="login_id" placeholder="아이디"/><br>
-		<input type="password" id="login_pass" name="login_pass" placeholder="비밀번호"/><br>
-		<input type="submit" id="login_btn" value="로그인"/><br>
-	</form>
-</fieldset>
+<header id="header">
+	<h1>header</h1>
+</header>
+<aside id="membership_info">
+	<jsp:include page="oneplace/member_info.jsp"></jsp:include>
+</aside>
+<section id="contents">
+	<jsp:include page="oneplace/content.jsp"></jsp:include>
+</section>
+<footer>
+	<jsp:include page="oneplace/footer.html"></jsp:include>
+</footer>
 </body>
 </html>
