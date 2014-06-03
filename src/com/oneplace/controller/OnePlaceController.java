@@ -6,16 +6,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.oneplace.action.MemberAction;
 import com.oneplace.ajax.CafeSearchAjax;
 import com.oneplace.ajax.MemberAjax;
-import com.oneplace.application.OnePlace;
+import com.oneplace.application.OnePlaceApplication;
 import com.util.kht.Forward;
 
 public class OnePlaceController {
-	private OnePlace app;
+	private OnePlaceApplication app;
 	private CafeSearchAjax cafeSearchAjax;
 	private MemberAjax memberAjax;
 	private MemberAction memberAction;
 	public OnePlaceController() {
-		app = new OnePlace();
+		app = new OnePlaceApplication();
 		cafeSearchAjax = new CafeSearchAjax(app);
 		memberAjax = new MemberAjax(app);
 		memberAction = new MemberAction(app);

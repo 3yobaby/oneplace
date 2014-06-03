@@ -8,13 +8,14 @@ import java.util.Map;
 import com.oneplace.dao.CafeDAO;
 import com.oneplace.data.Cafe;
 import com.oneplace.data.Member;
+import com.util.kht.Application;
 
 
-public class OnePlace {
+public class OnePlaceApplication extends Application{
 	private Map<Integer, Cafe> cafeMap;
 	private List<Cafe> cafeList;
 	private Map<String, Member> memberMap;
-	public OnePlace() {
+	public OnePlaceApplication() {
 		cafeMap = new HashMap<Integer, Cafe>();
 		memberMap = new HashMap<String, Member>();
 		loadCafeMap();

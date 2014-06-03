@@ -3,17 +3,18 @@ package com.oneplace.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oneplace.application.OnePlace;
+import com.oneplace.application.OnePlaceApplication;
 import com.oneplace.dao.MemberDAO;
 import com.oneplace.data.Member;
 import com.util.kht.Action;
+import com.util.kht.Application;
 import com.util.kht.Forward;
 
 public class MemberAction extends Action{
-	private OnePlace app;
+	private OnePlaceApplication app;
 	private MemberDAO dao;
-	public MemberAction(OnePlace app) {
-		this.app = app;
+	public MemberAction(Application app) {
+		super(app);
 		dao = MemberDAO.getInstance();
 	}
 

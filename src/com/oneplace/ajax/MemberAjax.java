@@ -6,15 +6,15 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oneplace.application.OnePlace;
+import com.oneplace.application.OnePlaceApplication;
 import com.oneplace.dao.MemberDAO;
 import com.util.kht.Ajax;
 
 public class MemberAjax extends Ajax{
 	private MemberDAO dao;
-//	private OnePlace app;
-	public MemberAjax(OnePlace app) {
-//		this.app = app;
+	private OnePlaceApplication app;
+	public MemberAjax(OnePlaceApplication app) {
+		super(app);
 		dao = MemberDAO.getInstance();
 	}
 	public void execute(String command, HttpServletRequest request,

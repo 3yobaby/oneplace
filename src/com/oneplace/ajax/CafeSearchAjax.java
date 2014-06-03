@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 
-import com.oneplace.application.OnePlace;
+import com.oneplace.application.OnePlaceApplication;
 import com.oneplace.data.Cafe;
 import com.util.kht.Ajax;
 
 public class CafeSearchAjax extends Ajax{
-	private OnePlace app;
-	public CafeSearchAjax(OnePlace app) {
-		this.app = app;
+	private OnePlaceApplication app;
+	public CafeSearchAjax(OnePlaceApplication app) {
+		super(app);
 	}
 
 	@Override
