@@ -1,4 +1,4 @@
-package com.oneplace.util;
+package com.util.kht;
 
 import javax.servlet.http.HttpServletRequest;
 

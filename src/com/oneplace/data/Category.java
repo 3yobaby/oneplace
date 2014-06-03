@@ -1,6 +1,6 @@
 package com.oneplace.data;
 
-import com.oneplace.util.DTO;
+import com.util.kht.DTO;
 
 /*
  * 카테고리는 카페 관리자에 의해서 생성되고 관리된다.

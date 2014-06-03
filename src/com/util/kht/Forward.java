@@ -1,4 +1,4 @@
-package com.oneplace.util;
+package com.util.kht;
 
 public class Forward {
 	private String path;

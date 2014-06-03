@@ -2,7 +2,7 @@ package com.oneplace.data;
 
 import java.sql.Date;
 
-import com.oneplace.util.DTO;
+import com.util.kht.DTO;
 
 /*
  * 개인정보, 가입시간 등등
@@ -71,6 +71,13 @@ public class Member implements DTO{
 	}
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
+	}
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", name=" + name + ", pass=" + pass
+				+ ", gender=" + gender + ", birthday=" + birthday + ", email="
+				+ email + ", tel=" + tel + ", join=" + join + ", isValid="
+				+ isValid + "]";
 	}
 	
 	

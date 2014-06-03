@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oneplace.util.RequestURIParser;
+import com.util.kht.RequestURIParser;
 
 /**
  * Servlet implementation class AjaxController

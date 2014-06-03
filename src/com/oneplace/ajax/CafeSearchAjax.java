@@ -1,7 +1,9 @@
 package com.oneplace.ajax;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,8 +11,7 @@ import org.json.simple.JSONArray;
 
 import com.oneplace.application.OnePlace;
 import com.oneplace.data.Cafe;
-import com.oneplace.util.Ajax;
-import com.oneplace.util.Forward;
+import com.util.kht.Ajax;
 
 public class CafeSearchAjax extends Ajax{
 	private OnePlace app;
@@ -24,6 +25,14 @@ public class CafeSearchAjax extends Ajax{
 		switch(command){
 		case "/cafeSearch.ajax":
 			search(request, response);
+			String path = "WEB-INF/session/search_result.jsp";
+			try {
+				request.getRequestDispatcher(path).forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		}
 	}

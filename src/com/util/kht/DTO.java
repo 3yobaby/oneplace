@@ -1,4 +1,4 @@
-package com.oneplace.util;
+package com.util.kht;
 
 public interface DTO {
 

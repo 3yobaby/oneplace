@@ -2,7 +2,7 @@ package com.oneplace.data;
 
 import java.sql.Date;
 
-import com.oneplace.util.DTO;
+import com.util.kht.DTO;
 
 /*
  * 게시글

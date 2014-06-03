@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import org.json.simple.JSONObject;
 
-import com.oneplace.util.DTO;
+import com.util.kht.DTO;
 
 /*
  * 카페는 카페 관리자에 의해서 만들어진다

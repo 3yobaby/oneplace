@@ -6,13 +6,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.oneplace.application.OnePlace;
 import com.oneplace.dao.MemberDAO;
 import com.oneplace.data.Member;
-import com.oneplace.util.Action;
-import com.oneplace.util.Forward;
+import com.util.kht.Action;
+import com.util.kht.Forward;
 
 public class MemberAction extends Action{
 	private OnePlace app;
+	private MemberDAO dao;
 	public MemberAction(OnePlace app) {
 		this.app = app;
+		dao = MemberDAO.getInstance();
 	}
 
 	@Override
@@ -25,6 +27,9 @@ public class MemberAction extends Action{
 		case "/logout.do":
 			logout(request, response);
 			break;
+		case "/join.do":
+			join(request, response);
+			break;
 		}
 		return forward;
 	}
@@ -35,7 +40,6 @@ public class MemberAction extends Action{
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) {
-		MemberDAO dao = new MemberDAO();
 		Member member = dao.login(request.getParameter("login_id"), 
 				request.getParameter("login_pass"));
 		if(member != null){
@@ -44,6 +48,24 @@ public class MemberAction extends Action{
 			forward.setPath("./");
 		}else{
 			// 로그인 실패 페이지
+		}
+		forward.setPath("./");
+	}
+	
+	private void join(HttpServletRequest request,
+			HttpServletResponse response) {
+		Member member = new Member();
+		member.setId(request.getParameter("join_id"));
+		member.setPass(request.getParameter("join_pass"));
+		member.setEmail(request.getParameter("join_email"));
+		member.setName(request.getParameter("join_name"));
+		member.setTel(request.getParameter("join_tel"));
+		System.out.println(member);
+		boolean bool = dao.join(member);
+		if(bool){ // 가입 성공
+			request.getSession().setAttribute("join_result", true);
+		}else{ // 가입 실패
+			request.getSession().setAttribute("join_result", false);
 		}
 		forward.setPath("./");
 	}
