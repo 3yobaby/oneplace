@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <script src="jquery-1.11.1.min.js" type="text/javascript"></script>
 <script>
-	document.createElement("abc");
+	
 </script>
 <style type="text/css">
 	/* a[class=group_title]{
@@ -38,12 +38,14 @@
 	}
 	
 	section {
+		width : 75%;
 		height : 500px;
+		float : left;
 	}
 	
 	aside {
-		height : 800px;
-		width : 200px;
+		width : 20%;
+		height : 500px;
 		float : left;
 	}
 
@@ -58,16 +60,10 @@
 		display : inline;
 	}
 </style>
-<script>
-	$(document).ready(function(){
-		
-	});
-
-</script>
 </head>
 <body>
 <header id="header">
-	<h1>header</h1>
+	<h1>검색 페이지</h1>
 </header>
 <aside id="member_info">
 	<nav>

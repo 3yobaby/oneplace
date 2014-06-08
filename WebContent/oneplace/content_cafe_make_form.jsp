@@ -6,43 +6,52 @@
 	}
 </style>
 <script>
-	function cafe_word_add(){
-		return false;
-	}
-	
-	var ccmc = false;
-	function content_cafe_make_check(cn, on, ca){
-		if(!check_cafe_name()){
-			$(cn).val('');
-			$(cn).attr('placeholder','중복입니다');
-		}else if(!check_org_name()){
-			$(on).val('');
-			$(on).attr('placeholder','중복입니다');
-		}else if(!check_cafe_addr()){
-			$(ca).val('');
-			$(ca).attr('placeholder','중복입니다');
-		}
-		return ccmc;
-	}
-	
-	// 비동기.........
-	function check_cafe_name(){
-		$.get('check_cafe_name.ajax', function(result){
-			return result;
+	var submit = false;
+	var temp = {};
+	function content_cafe_make_check(){
+		if(submit && size)
+			return true;
+		$cn = $('#cafe_name');
+		$og = $('#org_name');
+		$ca = $('#cafe_addr');
+		temp['cafe_name'] = $cn.val();
+		temp['org_name'] = $og.val();
+		temp['cafe_addr'] = $ca.val();
+		$.post('cafe_name_check.ajax', temp, function(result){
+			$result = $.parseJSON(result);
+			if($result.cn_check == false){
+				alert('카페 이름 중복');
+				return;
+			}
+			if($result.on_check == false){
+				alert('존재하지 않는 기관');
+				return;
+			}
+			if($result.ca_check == false){
+				alert('주소가 중복');
+				return;
+			}
+			submit = true;
+			$('#cafe_make_form').submit();
 		});
 		return false;
 	}
 	
-	function check_org_name(){
-		return false;
+	var words = {};
+	var index = 0;
+	function cafe_word_add(){
+		var $temp = $('#cafe_search_word');
+		words[index++] = $temp.val();
+		var result = "검색어 : ";
+		for(key in words){
+			result += words[key] + " ";
+		}
+		$('#word_list').html(result);
 	}
 	
-	function check_cafe_addr(){
-		return false;
-	}
 </script>
-<div id="content_cafe_make_form" onsubmit="return content_cafe_make_check(cafe_name, org_name, cafe_addr)">
-	<form action="#" method="post">
+<div id="content_cafe_make_form">
+	<form id="cafe_make_form" action="#" method="post" onsubmit="return content_cafe_make_check()">
 		<h1>카페 만들기</h1>
 		<label for="cafe_name">카페 이름</label>
 		<input id="cafe_name" name="cafe_name" type="text"/><br>
@@ -60,8 +69,10 @@
 		<label for="cafe_detail">카페 설명</label>
 		<textarea id="cafe_detail" name="cafe_datail" cols="40" rows="5">
 		</textarea><br>
-		<label for="cafe_words">카페 검색어</label><input type="text"/>
-		<button onclick="return cafe_word_add()">추가</button>
+		<label for="cafe_words">카페 검색어</label><input id="cafe_search_word" type="text"/>
+		<input type="button" onclick="cafe_word_add()" value="추가">
+		<p id="word_list"></p>
 		<input type="submit" value="카페 만들기"/>
 	</form>
+	<button onclick="location.href='./'">홈으로</button>
 </div>

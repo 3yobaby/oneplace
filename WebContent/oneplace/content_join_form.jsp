@@ -41,4 +41,5 @@
 		<input type="submit" value="가입하기" />
 	</fieldset>
 </form>
+<input type="button" onclick="location.href = './'" value="홈으로"/>
 </div>

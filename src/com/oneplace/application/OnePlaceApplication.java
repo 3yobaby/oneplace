@@ -7,17 +7,14 @@ import java.util.Map;
 
 import com.oneplace.dao.CafeDAO;
 import com.oneplace.data.Cafe;
-import com.oneplace.data.Member;
 import com.util.kht.Application;
 
 
 public class OnePlaceApplication extends Application{
 	private Map<Integer, Cafe> cafeMap;
 	private List<Cafe> cafeList;
-	private Map<String, Member> memberMap;
 	public OnePlaceApplication() {
 		cafeMap = new HashMap<Integer, Cafe>();
-		memberMap = new HashMap<String, Member>();
 		loadCafeMap();
 		
 		cafeList = new ArrayList<Cafe>();
@@ -31,11 +28,11 @@ public class OnePlaceApplication extends Application{
 
 	private void loadCafeMap() {
 		CafeDAO dao = new CafeDAO();
-		cafeMap = dao.getAllCafe();
+		cafeMap = dao.getAllCafeMap();
 	}
 	
 	// 최근 카페 순으로 찾아준다
-	public ArrayList<Cafe> getCafeList(int size){
+	public ArrayList<Cafe> getNewCafeList(int size){
 		ArrayList<Cafe> list = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
 			list.add(this.cafeList.get(i));
@@ -47,11 +44,12 @@ public class OnePlaceApplication extends Application{
 		return cafeMap.get(cafeKey);
 	}
 	
-	public void login(String sessionId, Member member) {
-		memberMap.put(sessionId, member);
-	}
-	
-	public void logout(String sessionId){
-		memberMap.remove(sessionId);
+	// 전체 카페 선택시 반환하는 카페 목록
+	public ArrayList<Cafe> getCafeAll() {
+		ArrayList<Cafe> list = new ArrayList<Cafe>();
+		for (int i = 0; i < 10; i++) {
+			list.add(cafeList.get(i));
+		}
+		return list;
 	}
 }

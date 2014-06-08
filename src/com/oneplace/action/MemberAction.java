@@ -11,12 +11,7 @@ import com.util.kht.Application;
 import com.util.kht.Forward;
 
 public class MemberAction extends Action{
-	private OnePlaceApplication app;
-	private MemberDAO dao;
-	public MemberAction(Application app) {
-		super(app);
-		dao = MemberDAO.getInstance();
-	}
+	public MemberAction() {}
 
 	@Override
 	public Forward execute(String command, HttpServletRequest request,
@@ -36,33 +31,32 @@ public class MemberAction extends Action{
 	}
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) {
-		app.logout(request.getSession().getId());
 		request.getSession().setAttribute("member", null);
+		forward.setPath("./");
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) {
+		MemberDAO dao = new MemberDAO();
 		Member member = dao.login(request.getParameter("login_id"), 
 				request.getParameter("login_pass"));
 		if(member != null){
 			request.getSession().setAttribute("member", member);
-			app.login(request.getSession().getId(), member);
-			forward.setPath("./");
 		}else{
-			// 로그인 실패 페이지
+			// 실패시
 		}
 		forward.setPath("./");
 	}
 	
 	private void join(HttpServletRequest request,
 			HttpServletResponse response) {
+		MemberDAO dao = new MemberDAO();
 		Member member = new Member();
 		member.setId(request.getParameter("join_id"));
 		member.setPass(request.getParameter("join_pass"));
 		member.setEmail(request.getParameter("join_email"));
 		member.setName(request.getParameter("join_name"));
 		member.setTel(request.getParameter("join_tel"));
-		System.out.println(member);
-		boolean bool = dao.join(member);
+		boolean bool = dao.addMember(member);
 		if(bool){ // 가입 성공
 			request.getSession().setAttribute("join_result", true);
 		}else{ // 가입 실패

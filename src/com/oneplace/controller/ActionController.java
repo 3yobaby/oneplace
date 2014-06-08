@@ -8,24 +8,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oneplace.action.MemberAction;
+import com.oneplace.application.OnePlaceApplication;
+import com.util.kht.Action;
+import com.util.kht.Application;
 import com.util.kht.Forward;
 import com.util.kht.RequestURIParser;
 
 
 @WebServlet("*.do")
 public class ActionController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
-	private OnePlaceController opController;
 	
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		if(getServletContext().getAttribute("opc") == null){
-			opController = new OnePlaceController();
-			getServletContext().setAttribute("opc", opController);
-		}else{
-			opController = (OnePlaceController) getServletContext().getAttribute("opc");
+		Application app = (Application) getServletContext().getAttribute("OneApp");
+		if(app == null){
+			app = new OnePlaceApplication();
+			getServletContext().setAttribute("OneApp", app);
 		}
 	}
 
@@ -39,7 +39,16 @@ public class ActionController extends HttpServlet {
 	
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String command = RequestURIParser.getAction(request); // command = "/action.bo"
-		Forward forward = opController.execute(command, request, response);
+		Forward forward = null;
+		Action action;
+		switch(command){	
+		case "/login.do":
+		case "/join.do":
+		case "/logout.do":
+			action = new MemberAction();
+			forward = action.execute(command, request, response);
+			break;
+		}
 		if(forward == null)
 			return;
 		if(forward.isForwarding()){
