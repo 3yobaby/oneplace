@@ -3,6 +3,8 @@ package com.oneplace.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.oneplace.application.OnePlaceApplication;
 import com.oneplace.dao.MemberDAO;
 import com.oneplace.data.Member;
@@ -17,9 +19,6 @@ public class MemberAction extends Action{
 	public Forward execute(String command, HttpServletRequest request,
 			HttpServletResponse response) {
 		switch(command){
-		case "/login.do":
-			login(request, response);
-			break;
 		case "/logout.do":
 			logout(request, response);
 			break;
@@ -32,18 +31,6 @@ public class MemberAction extends Action{
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().setAttribute("member", null);
-		forward.setPath("./");
-	}
-
-	private void login(HttpServletRequest request, HttpServletResponse response) {
-		MemberDAO dao = new MemberDAO();
-		Member member = dao.login(request.getParameter("login_id"), 
-				request.getParameter("login_pass"));
-		if(member != null){
-			request.getSession().setAttribute("member", member);
-		}else{
-			// 실패시
-		}
 		forward.setPath("./");
 	}
 	

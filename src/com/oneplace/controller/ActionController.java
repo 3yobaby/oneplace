@@ -19,6 +19,11 @@ import com.util.kht.RequestURIParser;
 @WebServlet("*.do")
 public class ActionController extends HttpServlet {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -42,7 +47,6 @@ public class ActionController extends HttpServlet {
 		Forward forward = null;
 		Action action;
 		switch(command){	
-		case "/login.do":
 		case "/join.do":
 		case "/logout.do":
 			action = new MemberAction();

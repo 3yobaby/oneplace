@@ -1,5 +1,7 @@
 package com.oneplace.dao;
 
+import org.json.simple.JSONObject;
+
 import com.oneplace.data.Member;
 import com.util.kht.DAO;
 import com.util.kht.SampleData;
@@ -8,10 +10,8 @@ public class MemberDAO extends DAO{
 	private SampleData data = new SampleData();
 	public MemberDAO() {}
 
-	public Member login(String id, String pass){
-		Member member = new Member();
-		member = data.getLoginMember();
-		return member;
+	public JSONObject login(String id, String pass){
+		return data.getLoginMember();
 	}
 
 	public boolean addMember(Member member) {

@@ -26,6 +26,16 @@ public class Cafe implements DTO{
 	private Date date;
 	private String detail;
 	private String managerName;
+	private boolean isOrgCafe = false;
+	
+	public boolean isOrgCafe() {
+		return isOrgCafe;
+	}
+	
+	public void setOrgCafe(boolean isOrgCafe) {
+		this.isOrgCafe = isOrgCafe;
+	}
+	
 	public int getKey() {
 		return key;
 	}

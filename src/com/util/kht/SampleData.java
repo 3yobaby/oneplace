@@ -26,7 +26,8 @@ public class SampleData {
 		return map;
 	}
 
-	public ArrayList<Cafe> getCafeList() {
+	// 소속 카페
+	public ArrayList<Cafe> getCafeList(JSONObject member) {
 		ArrayList<Cafe> list = new ArrayList<Cafe>();
 		for (int i = 0; i < 10; i++) {
 			Cafe cafe = new Cafe();
@@ -40,7 +41,7 @@ public class SampleData {
 		return list;
 	}
 
-	public ArrayList<Cafe> getMyCafeList() {
+	public ArrayList<Cafe> getMyCafeList(JSONObject member) {
 		ArrayList<Cafe> list = new ArrayList<Cafe>();
 		for (int i = 0; i < 10; i++) {
 			Cafe cafe = new Cafe();
@@ -105,11 +106,11 @@ public class SampleData {
 		return false;
 	}
 
-	public Member getLoginMember() {
+	public JSONObject getLoginMember() {
 		Member member = new Member();
 		member.setId("testid");
 		member.setName("테스트 회원");
-		return member;
+		return member.toJSONObject();
 	}
 	
 }

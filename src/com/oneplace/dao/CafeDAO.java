@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.oneplace.data.Cafe;
-import com.oneplace.data.Member;
 import com.util.kht.DAO;
 import com.util.kht.SampleData;
 
@@ -32,16 +32,16 @@ public class CafeDAO extends DAO{
 	}
 
 	// 소속된
-	public ArrayList<Cafe> getCafeList(Member member) {
+	public ArrayList<Cafe> getCafeList(JSONObject member) {
 		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		list = data.getCafeList();
+		list = data.getCafeList(member);
 		return list;
 	}
 	
 	// 직접 만든
-	public ArrayList<Cafe> getMyCafeList(Member member) {
+	public ArrayList<Cafe> getMyCafeList(JSONObject member) {
 		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		list = data.getMyCafeList();
+		list = data.getMyCafeList(member);
 		return list;
 	}
 

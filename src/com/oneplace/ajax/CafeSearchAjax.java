@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.oneplace.dao.CafeDAO;
 import com.oneplace.data.Cafe;
-import com.oneplace.data.Member;
 import com.util.kht.Ajax;
 import com.util.kht.DAO;
 
@@ -34,7 +34,7 @@ public class CafeSearchAjax extends Ajax{
 			HttpServletResponse response){
 		ArrayList<Cafe> list = new ArrayList<Cafe>();
 		DAO dao;
-		Member member;
+		JSONObject member;
 		JSONArray array = new JSONArray();
 		switch(request.getParameter("select")){
 		case "select_group_all":
@@ -46,7 +46,7 @@ public class CafeSearchAjax extends Ajax{
 			list = ((CafeDAO)dao).getNewCafeList(10); // cafe numbers
 			break;
 		case "select_group_join":
-			member = (Member) request.getSession().getAttribute("member");
+			member = (JSONObject) request.getSession().getAttribute("member");
 			if(member == null){
 				break;
 			}
@@ -54,7 +54,7 @@ public class CafeSearchAjax extends Ajax{
 			list = ((CafeDAO) dao).getCafeList(member);
 			break;
 		case "select_group_my":
-			member = (Member) request.getSession().getAttribute("member");
+			member = (JSONObject) request.getSession().getAttribute("member");
 			if(member == null){
 				break;
 			}

@@ -32,15 +32,19 @@
 	
 	header {
 		background-color : #aaaaaa;
+		border-radius : 10px;
 		width : 100%;
 		height : 100px;
 		margin-bottom : 10px;
+		padding : 10px;
+		color: white;
 	}
 	
 	section {
 		width : 75%;
 		height : 500px;
 		float : left;
+		margin-left: 10px;
 	}
 	
 	aside {
@@ -58,6 +62,14 @@
 	}
 	footer *{
 		display : inline;
+	}
+	
+	fieldset {
+		border-radius : 10px;
+	}
+	
+	button {
+		border-radius : 2px;
 	}
 </style>
 </head>

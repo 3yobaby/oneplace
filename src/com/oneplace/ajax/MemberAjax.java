@@ -1,16 +1,11 @@
 package com.oneplace.ajax;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
-import com.oneplace.dao.CafeDAO;
 import com.oneplace.dao.MemberDAO;
-import com.oneplace.data.Cafe;
-import com.oneplace.data.Member;
 import com.util.kht.Ajax;
 
 public class MemberAjax extends Ajax{
@@ -36,10 +31,10 @@ public class MemberAjax extends Ajax{
 	
 	private void login(HttpServletRequest request, HttpServletResponse response) {
 		MemberDAO dao = new MemberDAO();
-		Member member = dao.login(request.getParameter("id"), request.getParameter("pass"));
-		if(member != null){
+		JSONObject json = dao.login(request.getParameter("id"), request.getParameter("pass"));
+		if(json != null){
 			submit("true", response);
-			request.getSession().setAttribute("member", member);
+			request.getSession().setAttribute("member", json);
 		}else{
 			submit("false", response);
 		}
