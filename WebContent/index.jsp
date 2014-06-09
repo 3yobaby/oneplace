@@ -42,7 +42,6 @@
 	
 	section {
 		width : 75%;
-		height : 500px;
 		float : left;
 		margin-left: 10px;
 	}
@@ -70,6 +69,10 @@
 	
 	button {
 		border-radius : 2px;
+	}
+	
+	.hide{
+		display : none;
 	}
 </style>
 </head>

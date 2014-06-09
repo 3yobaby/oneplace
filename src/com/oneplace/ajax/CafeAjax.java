@@ -6,14 +6,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import com.oneplace.dao.CafeDAO;
-import com.oneplace.dao.OrgDAO;
+import com.oneplace.dao.OrganizationDAO;
 import com.util.kht.Ajax;
 
 public class CafeAjax extends Ajax{
 	@Override
 	public void execute(String command, javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) {
 		switch(command){
-		case "/cafe_name_check.ajax":
+		case "cafe_create_check.ajax":
 			nameDupCheck(request, response);
 			break;
 		}
@@ -27,7 +27,7 @@ public class CafeAjax extends Ajax{
 		String orgName = request.getParameter("org_name");
 		String cafeAddr = request.getParameter("cafe_uri");
 		CafeDAO cafedao = new CafeDAO();
-		OrgDAO orgdao = new OrgDAO();
+		OrganizationDAO orgdao = new OrganizationDAO();
 		boolean b1 = cafedao.isDupName(cafeName);
 		boolean b2 = orgdao.isDupName(orgName);
 		boolean b3 = cafedao.isDupUri(cafeAddr);
@@ -35,6 +35,6 @@ public class CafeAjax extends Ajax{
 		json.put("cn_check", !b1);
 		json.put("on_check", !b2);
 		json.put("ca_check", !b3);
-		submit(json.toString(), response);
-	};
+		submit(json.toJSONString(), response);
+	}
 }

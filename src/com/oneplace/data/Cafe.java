@@ -1,39 +1,49 @@
 package com.oneplace.data;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
 
-import com.util.kht.DTO;
+import com.util.kht.JSONObjectAble;
 
-/*
- * 카페는 카페 관리자에 의해서 만들어진다
- * 1. pk
- * 2. 카페이름
- * 3. 만든 관리자 key
- * 4. 관련 기관 key
- * 5. 검색 허용
- * 7. 유효성(삭제)
- * 8. 생성날짜
- */
-public class Cafe implements DTO{
+@SuppressWarnings("unchecked")
+public class Cafe implements JSONObjectAble{
 	private int key;
-	private String title;
-	private int managerKey;
-	private int organKey;
-	private boolean search;
+	private String name;
+	private boolean search = true;
 	private boolean isValid;
 	private Date date;
-	private String detail;
-	private String managerName;
-	private boolean isOrgCafe = false;
+	private String detail = "";
+	private boolean isOrganization = false;
+	private Member manager;
+	private Organization organization = null;
+	private String searchWords = "";
+	private ArrayList<Member> memberList;
+	private String uri;
 	
-	public boolean isOrgCafe() {
-		return isOrgCafe;
+	public Cafe() {
+		memberList = new ArrayList<Member>();
 	}
 	
-	public void setOrgCafe(boolean isOrgCafe) {
-		this.isOrgCafe = isOrgCafe;
+	public void addMember(Member member) {
+		memberList.add(member);
+	}
+	
+	public Organization getOrganization() {
+		return organization;
+	}
+	
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+	
+	public boolean isOrganization() {
+		return isOrganization;
+	}
+	
+	public void setOrganization(boolean isOrganization) {
+		this.isOrganization = isOrganization;
 	}
 	
 	public int getKey() {
@@ -42,24 +52,13 @@ public class Cafe implements DTO{
 	public void setKey(int key) {
 		this.key = key;
 	}
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public int getManagerKey() {
-		return managerKey;
-	}
-	public void setManagerKey(int managerKey) {
-		this.managerKey = managerKey;
-	}
-	public int getOrganKey() {
-		return organKey;
-	}
-	public void setOrganKey(int organKey) {
-		this.organKey = organKey;
-	}
+
 	public boolean isSearch() {
 		return search;
 	}
@@ -85,19 +84,46 @@ public class Cafe implements DTO{
 	public String getDetail() {
 		return detail;
 	}
-	public void setManagerName(String managerName) {
-		this.managerName = managerName;
-	}
-	public String getManagerName() {
-		return managerName;
+	
+	public Member getManager() {
+		return manager;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public JSONObject getJson() {
+	public void setManager(Member manager) {
+		this.manager = manager;
+	}
+	
+	public boolean hasSearchWord(String word) {
+		String temp[] = this.searchWords.split("|");
+		for(String t : temp){
+			if(t.equals(word)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	public void setSearchWords(String words){
+		this.searchWords = words;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+	
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+	
+	@Override
+	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
-		json.put("title", this.title);
-		json.put("name", this.managerName);
+		json.put("name", new String(this.name));
+		json.put("manager", new String(this.manager.getName()));
 		json.put("date", this.date.toString());
+		json.put("detail", detail);
 		return json;
 	}
+
 }

@@ -9,7 +9,7 @@
 	var submit = false;
 	var temp = {};
 	function content_cafe_make_check(){
-		if(submit && size)
+		if(submit)
 			return true;
 		$cn = $('#cafe_name');
 		$og = $('#org_name');
@@ -17,7 +17,7 @@
 		temp['cafe_name'] = $cn.val();
 		temp['org_name'] = $og.val();
 		temp['cafe_addr'] = $ca.val();
-		$.post('cafe_name_check.ajax', temp, function(result){
+		$.post('cafe_create_check.ajax', temp, function(result){
 			$result = $.parseJSON(result);
 			if($result.cn_check == false){
 				alert('카페 이름 중복');
@@ -48,7 +48,6 @@
 		}
 		$('#word_list').html(result);
 	}
-	
 </script>
 <div id="content_cafe_make_form">
 	<form id="cafe_make_form" action="#" method="post" onsubmit="return content_cafe_make_check()">

@@ -1,6 +1,8 @@
 package com.oneplace.data;
 
-import com.util.kht.DTO;
+import org.json.simple.JSONObject;
+
+import com.util.kht.JSONObjectAble;
 
 /*
  * 카테고리는 카페 관리자에 의해서 생성되고 관리된다.
@@ -11,7 +13,7 @@ import com.util.kht.DTO;
  * 4. 서브 카테고리에 해당하는가 isSubCategory
  * 5. cafe fk
  */
-public class Category implements DTO{
+public class Category implements JSONObjectAble{
 	private int key;
 	private int cafeKey;
 	private String title;
@@ -42,6 +44,11 @@ public class Category implements DTO{
 	}
 	public void setCafeKey(int cafeKey) {
 		this.cafeKey = cafeKey;
+	}
+	
+	@Override
+	public JSONObject toJSONObject() {
+		return null;
 	}
 	
 	

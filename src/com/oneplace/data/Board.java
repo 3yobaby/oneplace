@@ -2,7 +2,9 @@ package com.oneplace.data;
 
 import java.sql.Date;
 
-import com.util.kht.DTO;
+import org.json.simple.JSONObject;
+
+import com.util.kht.JSONObjectAble;
 
 /*
  * 게시글
@@ -18,7 +20,7 @@ import com.util.kht.DTO;
  * 9. 유효성(삭제)
  * 10. 생성날짜
  */
-public class Board implements DTO{
+public class Board implements JSONObjectAble{
 	private int key;
 	private String title;
 	private int memberKey;
@@ -108,5 +110,11 @@ public class Board implements DTO{
 		dto.setTags("코드|헬로");
 		dto.setTitle("헬로 출력하는 소스 공개합니다");
 		return dto;
+	}
+	
+	@Override
+	public JSONObject toJSONObject() {
+		
+		return null;
 	}
 }

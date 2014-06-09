@@ -7,11 +7,14 @@ import com.util.kht.DAO;
 import com.util.kht.SampleData;
 
 public class MemberDAO extends DAO{
-	private SampleData data = new SampleData();
+	private SampleData data = SampleData.getInstance();
 	public MemberDAO() {}
 
 	public JSONObject login(String id, String pass){
-		return data.getLoginMember();
+		Member member = data.getMember(id);
+		if(member != null)
+			return member.toJSONObject();
+		else return null;
 	}
 
 	public boolean addMember(Member member) {
@@ -29,4 +32,8 @@ public class MemberDAO extends DAO{
 		return false;
 	}
 
+	// 회원 정보 수정
+	public boolean modify(JSONObject member) {
+		return false;
+	}
 }

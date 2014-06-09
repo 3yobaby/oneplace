@@ -14,21 +14,34 @@ public class MemberAjax extends Ajax{
 	public void execute(String command, HttpServletRequest request,
 			HttpServletResponse response) {
 		switch(command){
-		case "/join_id_check.ajax":
+		case "join_id_check.ajax":
 			MemberDAO dao = new MemberDAO();
 			boolean result = dao.isDuplicatedId(request.getParameter("join_id"));
 			JSONObject json = new JSONObject();
 			json.put("join_id_check", result);
 			submit(json.toString(), response);
 			break;
-		case "/id_pass_find.ajax":
+		case "id_pass_find.ajax":
 			idFind(request, response);
 			break;
-		case "/login.ajax":
+		case "login.ajax":
 			login(request, response);
+			break;
+		case "check_pass.ajax":
+			checkPassword(request, response);
+			break;
 		}
 	}
 	
+	private void checkPassword(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
+		if(member.get("pass").equals(request.getParameter("pass"))){
+			submit("true", response);
+		}else{
+			submit("false", response);
+		}
+	}
 	private void login(HttpServletRequest request, HttpServletResponse response) {
 		MemberDAO dao = new MemberDAO();
 		JSONObject json = dao.login(request.getParameter("id"), request.getParameter("pass"));

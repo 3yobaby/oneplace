@@ -1,17 +1,18 @@
 package com.oneplace.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.oneplace.data.Cafe;
+import com.oneplace.data.Member;
 import com.util.kht.DAO;
 import com.util.kht.SampleData;
 
+@SuppressWarnings("unchecked")
 public class CafeDAO extends DAO{
-	private SampleData data = new SampleData();
+	private SampleData data = SampleData.getInstance();
 	public CafeDAO() {}
 	
 	public JSONArray getSample(){
@@ -19,37 +20,32 @@ public class CafeDAO extends DAO{
 		return arr;
 	}
 
-	public HashMap<Integer, Cafe> getAllCafeMap() {
-		HashMap<Integer, Cafe> map = data.getCafeHashMap();
-		return map;
+	public JSONArray getAllCafeList() {
+		ArrayList<Cafe> list = data.getAllCafeList();
+		JSONArray array = new JSONArray();
+		for (Cafe cafe : list) {
+			array.add(cafe.toJSONObject());
+		}
+		return array;
 	}
 
-	// 시간순
-	public ArrayList<Cafe> getAllCafeList() {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		list = data.getAllCafeList();
-		return list;
-	}
-
-	// 소속된
-	public ArrayList<Cafe> getCafeList(JSONObject member) {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		list = data.getCafeList(member);
-		return list;
+	public JSONArray getCafeList(JSONObject member) {
+		Member temp = data.getMember((String)member.get("id"));
+		ArrayList<Cafe> list = temp.getCafeList();
+		JSONArray array = new JSONArray();
+		for (Cafe cafe : list) {
+			array.add(cafe.toJSONObject());
+		}
+		return array;
 	}
 	
-	// 직접 만든
-	public ArrayList<Cafe> getMyCafeList(JSONObject member) {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		list = data.getMyCafeList(member);
-		return list;
+	public JSONObject getMyCafe(JSONObject member) {
+		Member temp = data.getMember((String)member.get("id"));
+		Cafe cafe = temp.getCafe();
+		if(cafe != null)
+			return cafe.toJSONObject();
+		else return null;
 	}
-
-	// search
-	public ArrayList<Cafe> getNewCafeList(int size) {
-		return getAllCafeList();
-	}
-
 	
 	public boolean isDupName(String cafeName) {
 		return false;

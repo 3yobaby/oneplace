@@ -10,34 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.util.kht.RequestURIParser;
 
-@WebServlet("*.go")
-public class SenderController extends HttpServlet {
+@WebServlet({ "*.cafe", "*.org" })
+public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public SenderController() {
-        super();
-    }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doProcess(request, response);
+		doPost(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doProcess(request, response);
-	}
-
-	private void doProcess(HttpServletRequest request,
-			HttpServletResponse response) {
-		String uri = RequestURIParser.getAction(request);
-		String where = (String)request.getParameter("where");
-		switch(where){
-		case "cafe":
-			try {
-				response.sendRedirect("../CafePlace"+uri);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		}
+		response.sendRedirect("../" + RequestURIParser.getAction(request));
 	}
 }

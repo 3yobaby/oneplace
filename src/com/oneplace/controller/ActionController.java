@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.oneplace.action.MemberAction;
-import com.oneplace.application.OnePlaceApplication;
 import com.util.kht.Action;
-import com.util.kht.Application;
 import com.util.kht.Forward;
 import com.util.kht.RequestURIParser;
 
@@ -27,11 +25,6 @@ public class ActionController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		Application app = (Application) getServletContext().getAttribute("OneApp");
-		if(app == null){
-			app = new OnePlaceApplication();
-			getServletContext().setAttribute("OneApp", app);
-		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,8 +40,9 @@ public class ActionController extends HttpServlet {
 		Forward forward = null;
 		Action action;
 		switch(command){	
-		case "/join.do":
-		case "/logout.do":
+		case "join.do":
+		case "logout.do":
+		case "modify_member.do":
 			action = new MemberAction();
 			forward = action.execute(command, request, response);
 			break;

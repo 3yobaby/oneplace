@@ -1,25 +1,34 @@
 package com.oneplace.data;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
 
-import com.util.kht.DTO;
+import com.util.kht.JSONObjectAble;
 
 /*
  * 개인정보, 가입시간 등등
  */
-public class Member implements DTO{
+public class Member implements JSONObjectAble{
 	private String id;
-	private String name;
+	private String name = "";
 	private String pass;
-	private int gender;
 	private Date birthday;
-	private String email;
-	private String tel;
+	private String email = "";
+	private String tel = "";
 	private Date join;
-	private boolean isValid;
+	private boolean isValid = true;
 	private boolean isOrgMember = false;
+	private ArrayList<Cafe> cafeArray = new ArrayList<Cafe>();
+	private Cafe cafe;
+	
+	public Cafe getCafe() {
+		return cafe;
+	}
+	public void setCafe(Cafe cafe) {
+		this.cafe = cafe;
+	}
 	
 	public String getId() {
 		return id;
@@ -38,12 +47,6 @@ public class Member implements DTO{
 	}
 	public void setPass(String pass) {
 		this.pass = pass;
-	}
-	public int getGender() {
-		return gender;
-	}
-	public void setGender(int gender) {
-		this.gender = gender;
 	}
 	public Date getBirthday() {
 		return birthday;
@@ -84,14 +87,21 @@ public class Member implements DTO{
 		this.isOrgMember = isOrgMember;
 	}
 	
+	public void addCafe(Cafe cafe) {
+		cafeArray.add(cafe);
+	}
+	
+	public ArrayList<Cafe> getCafeList() {
+		return cafeArray;
+	}
+	
 	@Override
 	public String toString() {
 		return "Member [id=" + id + ", name=" + name + ", pass=" + pass
-				+ ", gender=" + gender + ", birthday=" + birthday + ", email="
+				+ ", birthday=" + birthday + ", email="
 				+ email + ", tel=" + tel + ", join=" + join + ", isValid="
 				+ isValid + "]";
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSONObject(){
@@ -103,7 +113,10 @@ public class Member implements DTO{
 		json.put("birthday", birthday);
 		json.put("pass", pass);
 		json.put("isOrgMember", isOrgMember);
+		if(cafe != null){
+			json.put("cafe", cafe.getName());
+			json.put("cafe_uri", cafe.getUri());
+		}
 		return json;
 	}
-	
 }

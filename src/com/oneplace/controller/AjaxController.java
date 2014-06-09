@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.oneplace.ajax.CafeAjax;
 import com.oneplace.ajax.CafeSearchAjax;
 import com.oneplace.ajax.MemberAjax;
-import com.oneplace.application.OnePlaceApplication;
+import com.oneplace.ajax.OrganizationAjax;
 import com.util.kht.Ajax;
-import com.util.kht.Application;
 import com.util.kht.RequestURIParser;
 
 /**
@@ -26,11 +25,6 @@ public class AjaxController extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		Application app = (Application) getServletContext().getAttribute("OneApp");
-		if(app == null){
-			app = new OnePlaceApplication();
-			getServletContext().setAttribute("OneApp", app);
-		}
 	}
     public AjaxController() {
         super();
@@ -53,19 +47,23 @@ public class AjaxController extends HttpServlet {
 		String command = RequestURIParser.getAction(request);
 		Ajax ajax = null;
 		switch(command){
-		case "/cafeSearch.ajax":
-		case "/search_cafe_by_word.ajax":
+		case "cafeSearch.ajax":
+		case "search_cafe_by_word.ajax":
 			ajax = new CafeSearchAjax();
 			break;
-		case "/join_id_check.ajax":
-		case "/login.ajax":
+		case "join_id_check.ajax":
+		case "login.ajax":
+		case "check_pass.ajax":
 			ajax = new MemberAjax();
 			break;
-		case "/cafe_name_check.ajax":
+		case "cafe_create_check.ajax":
 			ajax = new CafeAjax();
 			break;
-		case "/id_pass_find.ajax":
+		case "id_pass_find.ajax":
 			ajax = new MemberAjax();
+			break;
+		case "org_search.ajax":
+			ajax = new OrganizationAjax();
 			break;
 		}
 		if(ajax != null)

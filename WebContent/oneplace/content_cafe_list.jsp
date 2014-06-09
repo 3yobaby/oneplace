@@ -14,7 +14,7 @@
 	}
 	
 	#content_cafe_list{
-		float : right;
+		float : left;
 	}
 </style>
 <script>
@@ -23,13 +23,11 @@
 	});
 	var selected_tap = 'select_group_all';
 	var cafe_list;
+	var org_list;
 	function sel_group(val){
 		switch(val){
 		case 'select_group_all':
 			$('#content_search_result legend').text('전체 카페');
-			break;
-		case 'select_group_new':
-			$('#content_search_result legend').text('새 카페');
 			break;
 		case 'select_group_join':
 			$('#content_search_result legend').text('가입 카페');
@@ -37,44 +35,55 @@
 		case 'select_group_my':
 			$('#content_search_result legend').text('내 카페');
 			break;
+		case 'select_org':
+			$('#content_search_result legend').text('기관 정보');
+			$.get('org_search.ajax', function(data){
+				org_list = $.parseJSON(data);
+				print_list(org_list);
+			});
+			return;
 		}
 		$.get('cafeSearch.ajax?select=' + val , function(data){
 			cafe_list = $.parseJSON(data);
-			print_cafe(cafe_list);
+			print_list(cafe_list);
 		});
 	}
-
+	
 	// result is a array
-	function print_cafe(result){
+	function print_list(result){
 		var num = 1;
 		$('tbody').empty();
 		$.each(result, function(key, value){
-			var title = value.title;
 			var name = value.name;
+			var manager = value.manager;
 			var date = value.date;
-			$('tbody').append('<tr>');
-			$('tbody').append('<td><p onclick="select_num(this)">'+ num++ +'</p></td>');
-			$('tbody').append('<td class="title"><p onclick="select_title(this)">'+title + '</p></td>');
-			$('tbody').append('<td class="name"><p onclick="select_name(this)">'+name + '</p></td>');
-			$('tbody').append('<td class="date">'+date + '</td>');
-			$('tbody').append('</tr>');
+			var detail = value.detail;
+			var uri = value.uri;
+			$temp = $('<tr>');
+			$temp.append('<td><p onclick="select_num(this)">'+ num++ +'</p></td>');
+			$temp.append('<td name="title"><p onclick="select_title(this)">'+name + '</p></td>');
+			$temp.append('<td name="name"><p onclick="select_name(this)">'+manager + '</p></td>');
+			$temp.append('<td name="date">'+date + '</td>');
+			$temp.append('<td name="uri" class="hide">'+ uri + '</td>');
+			$temp.append('<td><button onclick="goCafe(this)">들어가기</button</td>');
+			$('tbody').append($temp);
+			$('tbody').append('<tr class="hide"><td><p>'+ detail +'</p></td></tr>');
 		});
 	}
 	
 	function select_num(selected){
 		$s = $(selected);
-		alert($s.text());
 		// result[$s.text()-1] 선택된 카페
 	}
 	
+	var temp;
 	function select_name(selected){
-		$s = $(selected);
-		alert($s.text());
+		// 이름 선택
 	}
 	
 	function select_title(selected){
 		$s = $(selected);
-		alert($s.text());
+		$s.parent().parent().next().toggleClass('hide');
 	}
 
 	function search_cafe(val){
@@ -84,12 +93,17 @@
 			print_cafe($result);
 		})
 	}
+	
+	function goCafe(btn){
+		var uri = $(btn).parent().prev().text();
+		location.href = uri;
+	}
 </script>
 <div id="content_cafe_list">
 	<div id="navigation_groups">
 	<nav id="group_section">
 		<a id="select_group_all" onclick="sel_group(id)">전체 카페</a>
-		<a id="select_group_new" onclick="sel_group(id)">새 카페</a>
+		<a id="select_org" onclick="sel_group(id)">기관 정보</a>
 		<a id="select_group_join" onclick="sel_group(id)">가입한 카페</a>
 		<a id="select_group_my" onclick="sel_group(id)">내 카페</a>
 	</nav>
@@ -106,5 +120,6 @@
 		</table>
 	</fieldset>
 	</div>
+	<button onclick="content_cafe_make_form()">카페 만들기</button>
 	<button onclick="location.href = '../CafePlace/testcafe.cafe'">카페 들어가기 테스트</button>
 </div>

@@ -6,8 +6,23 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 public abstract class Ajax {
 	public abstract void execute(String command, HttpServletRequest request, HttpServletResponse response);
+	
+	protected void submit(JSONObjectAble json, HttpServletResponse response){
+		submit(json.toString(), response);
+	}
+	
+	protected void submit(JSONArray json, HttpServletResponse response){
+		submit(json.toString(), response);
+	}
+	
+	protected void submit(JSONObject json, HttpServletResponse response){
+		submit(json.toString(), response);
+	}
 	
 	protected void submit(String command, HttpServletResponse response){
 		response.setContentType("text/html;charset=utf-8");

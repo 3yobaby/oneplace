@@ -2,85 +2,104 @@ package com.util.kht;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.oneplace.data.Cafe;
 import com.oneplace.data.Member;
+import com.oneplace.data.Organization;
 
 public class SampleData {
-
-	public HashMap<Integer, Cafe> getCafeHashMap() {
-		HashMap<Integer, Cafe> map = new HashMap<Integer, Cafe>();
+	private static SampleData instance;
+	private ArrayList<Cafe> cafeList;
+	private ArrayList<Member> memberList;
+	private ArrayList<Organization> orgList;
+	
+	public static SampleData getInstance(){
+		if(instance == null){
+			return instance = new SampleData();
+		}
+		return instance;
+	}
+	private SampleData() {
+		// init
+		memberList = new ArrayList<Member>();
+		cafeList = new ArrayList<Cafe>();
+		orgList = new ArrayList<Organization>();
+		// 샘플 카페
 		for (int i = 0; i < 10; i++) {
 			Cafe cafe = new Cafe();
-			cafe.setTitle("서버에 등록된 카페 맵" + i);
+			cafe.setName("테스트 카페" + i);
 			cafe.setDetail("테스트 카페 " + i);
 			cafe.setDate(new Date(System.currentTimeMillis()));
-			cafe.setManagerKey(i);
-			cafe.setManagerName("김희택" + i);
-			map.put(cafe.getKey(), cafe);
+			Member temp = new Member();
+			temp.setName("테스트메니저");
+			cafe.setManager(temp);
+			cafeList.add(cafe);
 		}
-		return map;
-	}
-
-	// 소속 카페
-	public ArrayList<Cafe> getCafeList(JSONObject member) {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		for (int i = 0; i < 10; i++) {
-			Cafe cafe = new Cafe();
-			cafe.setTitle("테스트 소속 카페" + i);
-			cafe.setDetail("테스트 소속 카페 " + i);
-			cafe.setDate(new Date(System.currentTimeMillis()));
-			cafe.setManagerKey(i);
-			cafe.setManagerName("김희택" + i);
-			list.add(cafe);
+		// 동성학교 추가
+		Organization org = new Organization("동성직업전문학교");
+		org.setDate(new Date(System.currentTimeMillis()));
+		org.setUri("/dongsung.org");
+		orgList.add(org);
+		// 동성학교 카페 추가
+		Cafe cafe = new Cafe();
+		cafe.setName("603");
+		cafe.setDate(new Date(System.currentTimeMillis()));
+		cafe.setOrganization(org);
+		cafe.setManager(new Member());
+		Cafe cafe2 = new Cafe();
+		cafe2.setName("604");
+		cafe2.setDate(new Date(System.currentTimeMillis()));
+		cafe2.setOrganization(org);
+		cafe2.setManager(new Member());
+		org.addCafe(cafe);
+		org.addCafe(cafe2);
+		// 동성학원 메니저
+		Member orgmanager = new Member();
+		orgmanager.setName("동성학교장");
+		orgmanager.setId("manager");
+		orgmanager.setPass("1234");
+		orgmanager.addCafe(cafe);
+		orgmanager.addCafe(cafe2);
+		orgmanager.setCafe(org);
+		orgmanager.setOrgMember(true);
+		org.setManager(orgmanager);
+		memberList.add(orgmanager);
+		// 테스트 회원 추가
+		Member member = new Member();
+		member.setId("testid");
+		member.setName("테스트 회원");
+		member.setPass("1234");
+		member.setEmail("testemail@never.com");
+		memberList.add(member);
+		for (int i = 0; i < 10; i++) { // 테스트 회원의 소속 카페 추가
+			Cafe temp = new Cafe();
+			temp.setName("테스트회원이 가입한 카페 " + i);
+			temp.setDetail("카페설명........ " + i);
+			temp.setDate(new Date(System.currentTimeMillis()));
+			Member temp2 = new Member();
+			temp2.setName("샘플메니저" + i);
+			temp.setManager(temp2);
+			member.addCafe(cafe);
 		}
-		return list;
+		// 동성학원의 카페중 하나인 cafe에 테스트 회원 추가
+		cafe.addMember(member);
 	}
-
-	public ArrayList<Cafe> getMyCafeList(JSONObject member) {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		for (int i = 0; i < 10; i++) {
-			Cafe cafe = new Cafe();
-			cafe.setTitle("내가 만든 카페 목록" + i);
-			cafe.setDetail("테스트 내 카페 " + i);
-			cafe.setDate(new Date(System.currentTimeMillis()));
-			cafe.setManagerKey(i);
-			cafe.setManagerName("김희택" + i);
-			list.add(cafe);
-		}
-		return list;
-	}
-
+	
 	public ArrayList<Cafe> getCafeBySearchWord(String word) {
 		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		for (int i = 0; i < 10; i++) {
-			Cafe cafe = new Cafe();
-			cafe.setTitle("검색결과 카페" + i);
-			cafe.setDetail("테스트 카페 " + i);
-			cafe.setDate(new Date(System.currentTimeMillis()));
-			cafe.setManagerKey(i);
-			cafe.setManagerName("김희택" + i);
-			list.add(cafe);
+		for (Cafe cafe : cafeList) {
+			if(cafe.hasSearchWord(word)){
+				list.add(cafe);
+			}
 		}
 		return list;
 	}
 
 	public ArrayList<Cafe> getAllCafeList() {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		for (int i = 0; i < 10; i++) {
-			Cafe cafe = new Cafe();
-			cafe.setTitle("서버에 등록된 카페 리스트" + i);
-			cafe.setDetail("테스트 카페 " + i);
-			cafe.setDate(new Date(System.currentTimeMillis()));
-			cafe.setManagerKey(i);
-			cafe.setManagerName("김희택" + i);
-			list.add(cafe);
-		}
-		return list;
+		return cafeList;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -106,11 +125,15 @@ public class SampleData {
 		return false;
 	}
 
-	public JSONObject getLoginMember() {
-		Member member = new Member();
-		member.setId("testid");
-		member.setName("테스트 회원");
-		return member.toJSONObject();
+	public Member getMember(String id){
+		for(Member member : memberList){
+			if(member.getId().equals(id))
+				return member;
+		}
+		return null;
 	}
-	
+	public ArrayList<Organization> getOrganizationList() {
+		return this.orgList;
+	}
+
 }

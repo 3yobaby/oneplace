@@ -13,6 +13,7 @@ import com.oneplace.data.Cafe;
 import com.util.kht.Ajax;
 import com.util.kht.DAO;
 
+@SuppressWarnings("unchecked")
 public class CafeSearchAjax extends Ajax{
 	public CafeSearchAjax() {}
 
@@ -20,30 +21,25 @@ public class CafeSearchAjax extends Ajax{
 	public void execute(String command, HttpServletRequest request,
 			HttpServletResponse response) {
 		switch(command){
-		case "/cafeSearch.ajax":
+		case "cafeSearch.ajax":
 			search(request, response);
 			break;
-		case "/search_cafe_by_word.ajax":
+		case "search_cafe_by_word.ajax":
 			searchCafeByWord(request,response);
 			break;
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void search(HttpServletRequest request,
 			HttpServletResponse response){
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
 		DAO dao;
 		JSONObject member;
 		JSONArray array = new JSONArray();
+		JSONObject json = new JSONObject();
 		switch(request.getParameter("select")){
 		case "select_group_all":
 			dao = new CafeDAO();
-			list = ((CafeDAO)dao).getAllCafeList();
-			break;
-		case "select_group_new":
-			dao = new CafeDAO();
-			list = ((CafeDAO)dao).getNewCafeList(10); // cafe numbers
+			array = ((CafeDAO)dao).getAllCafeList();
 			break;
 		case "select_group_join":
 			member = (JSONObject) request.getSession().getAttribute("member");
@@ -51,7 +47,7 @@ public class CafeSearchAjax extends Ajax{
 				break;
 			}
 			dao = new CafeDAO();
-			list = ((CafeDAO) dao).getCafeList(member);
+			array = ((CafeDAO) dao).getCafeList(member);
 			break;
 		case "select_group_my":
 			member = (JSONObject) request.getSession().getAttribute("member");
@@ -59,17 +55,13 @@ public class CafeSearchAjax extends Ajax{
 				break;
 			}
 			dao = new CafeDAO();
-			list = ((CafeDAO) dao).getMyCafeList(member);
+			json = ((CafeDAO) dao).getMyCafe(member);
+			array.add(json);
 			break;
-		}
-		
-		for (Cafe cafe : list) {
-			array.add(cafe.getJson());
 		}
 		submit(array.toString(), response);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void searchCafeByWord(HttpServletRequest request,
 			HttpServletResponse response) {
 		String word = request.getParameter("word");
@@ -77,7 +69,7 @@ public class CafeSearchAjax extends Ajax{
 		ArrayList<Cafe> list = dao.getCafeBySearchWord(word);
 		JSONArray array = new JSONArray();
 		for (Cafe cafe : list) {
-			array.add(cafe.getJson());
+			array.add(cafe.toJSONObject());
 		}
 		submit(array.toString(), response);
 	}
