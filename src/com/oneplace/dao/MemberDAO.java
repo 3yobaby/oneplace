@@ -1,5 +1,8 @@
 package com.oneplace.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.simple.JSONObject;
 
 import com.oneplace.data.Member;
@@ -10,30 +13,31 @@ public class MemberDAO extends DAO{
 	private SampleData data = SampleData.getInstance();
 	public MemberDAO() {}
 
-	public JSONObject login(String id, String pass){
-		Member member = data.getMember(id);
-		if(member != null)
+	public JSONObject getMember(String id, String pass){
+		HashMap<String, Member> map = data.getAllMember();
+		Member member = map.get(id);
+		if(member.getPass().equals(pass))
 			return member.toJSONObject();
 		else return null;
 	}
 
-	public boolean addMember(Member member) {
-		System.out.println("implement joinMember " + this);
+	public boolean addMember(JSONObject member) {
+		HashMap<String, Member> map = data.getAllMember();
+		if(map.get(member.get("id")) == null){
+			map.put((String)member.get("id"), new Member(member));
+		}
 		return false;
 	}
 
-	public boolean isDuplicatedId(String id) {
-		System.out.println("implement isDupicatedId " + this);
-		return true;
+	public Member getMember(String id) {
+		HashMap<String, Member> map = data.getAllMember();
+		Member member = map.get(id);
+		return member;
 	}
+
+	public Map<String, Member> getAllMember() {
+		return data.getAllMember();
+	}
+
 	
-	// 아이디/비밀번호 찾기
-	public boolean hasMemberByEmail(String parameter) {
-		return false;
-	}
-
-	// 회원 정보 수정
-	public boolean modify(JSONObject member) {
-		return false;
-	}
 }

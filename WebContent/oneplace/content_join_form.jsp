@@ -18,8 +18,8 @@
 			$(p2).attr('placeholder','비밀번호가 다릅니다');
 			return false;
 		}
-		// data : isDupId?
-		$.get('join_id_check.ajax?join_id='+p1.value, function(result){
+		//아이디 중복체크	id_dup_check.ajax
+		$.get('id_dup_check.ajax?join_id='+p1.value, function(result){
 			if(result == 'false'){ // not dup id
 				dup_check = true;
 				join.submit();

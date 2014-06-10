@@ -8,36 +8,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oneplace.ajax.TestAjax;
 import com.util.kht.RequestURIParser;
+import com.util.kht.SampleData;
 
-@WebServlet("*.go")
-public class SenderController extends HttpServlet {
+/**
+ * Servlet implementation class TestServlet
+ */
+@WebServlet("*.data")
+public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public SenderController() {
+
+    public TestServlet() {
         super();
     }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doProcess(request, response);
+		String command = RequestURIParser.getAction(request);		
+		new TestAjax().execute(command, request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doProcess(request, response);
+		// TODO Auto-generated method stub
 	}
 
-	private void doProcess(HttpServletRequest request,
-			HttpServletResponse response) {
-		String uri = RequestURIParser.getAction(request);
-		String where = (String)request.getParameter("where");
-		switch(where){
-		case "cafe":
-			try {
-				response.sendRedirect("../CafePlace"+uri);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		}
-	}
 }

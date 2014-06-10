@@ -16,12 +16,12 @@
 			$(contents).html(data);
 		});
 	}
-	var t;
 	function login_form_login(id, pass){
 		var temp = {};	
 		temp.id = id;
 		temp.pass = pass;
-		$.post('login.ajax', temp, function(result){
+		$.post('login.ajax',temp, function(result){
+			alert("result :"  + result);
 			if(result == 'true'){
 				$.get('oneplace/member_login_ok.jsp',function(page){
 					$('#login_form').html(page);

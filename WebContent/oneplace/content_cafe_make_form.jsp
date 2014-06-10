@@ -9,32 +9,7 @@
 	var submit = false;
 	var temp = {};
 	function content_cafe_make_check(){
-		if(submit)
-			return true;
-		$cn = $('#cafe_name');
-		$og = $('#org_name');
-		$ca = $('#cafe_addr');
-		temp['cafe_name'] = $cn.val();
-		temp['org_name'] = $og.val();
-		temp['cafe_addr'] = $ca.val();
-		$.post('cafe_create_check.ajax', temp, function(result){
-			$result = $.parseJSON(result);
-			if($result.cn_check == false){
-				alert('카페 이름 중복');
-				return;
-			}
-			if($result.on_check == false){
-				alert('존재하지 않는 기관');
-				return;
-			}
-			if($result.ca_check == false){
-				alert('주소가 중복');
-				return;
-			}
-			submit = true;
-			$('#cafe_make_form').submit();
-		});
-		return false;
+
 	}
 	
 	var words = {};

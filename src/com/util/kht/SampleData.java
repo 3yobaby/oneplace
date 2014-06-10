@@ -1,20 +1,18 @@
 package com.util.kht;
 
 import java.sql.Date;
-import java.util.ArrayList;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import java.util.HashMap;
 
 import com.oneplace.data.Cafe;
+import com.oneplace.data.Manager;
 import com.oneplace.data.Member;
 import com.oneplace.data.Organization;
+import com.oneplace.data.OrganizationManager;
 
 public class SampleData {
 	private static SampleData instance;
-	private ArrayList<Cafe> cafeList;
-	private ArrayList<Member> memberList;
-	private ArrayList<Organization> orgList;
+	private HashMap<String, Cafe> cafeMap; // string is url or id
+	private HashMap<String, Member> memberMap;
 	
 	public static SampleData getInstance(){
 		if(instance == null){
@@ -24,116 +22,106 @@ public class SampleData {
 	}
 	private SampleData() {
 		// init
-		memberList = new ArrayList<Member>();
-		cafeList = new ArrayList<Cafe>();
-		orgList = new ArrayList<Organization>();
+		cafeMap =  new HashMap<String, Cafe>();
+		memberMap= new HashMap<String, Member>();
 		// 샘플 카페
 		for (int i = 0; i < 10; i++) {
-			Cafe cafe = new Cafe();
+			Manager temp = new Manager();
+			temp.setName("테스트메니저");
+			Cafe cafe = new Cafe(temp);
 			cafe.setName("테스트 카페" + i);
 			cafe.setDetail("테스트 카페 " + i);
 			cafe.setDate(new Date(System.currentTimeMillis()));
-			Member temp = new Member();
-			temp.setName("테스트메니저");
-			cafe.setManager(temp);
-			cafeList.add(cafe);
+			cafe.setUri("testcafe.cafe");
+			temp.setCafe(cafe);
+			cafeMap.put(cafe.getUri(), cafe);
 		}
-		// 동성학교 추가
-		Organization org = new Organization("동성직업전문학교");
-		org.setDate(new Date(System.currentTimeMillis()));
-		org.setUri("/dongsung.org");
-		orgList.add(org);
-		// 동성학교 카페 추가
-		Cafe cafe = new Cafe();
-		cafe.setName("603");
-		cafe.setDate(new Date(System.currentTimeMillis()));
-		cafe.setOrganization(org);
-		cafe.setManager(new Member());
-		Cafe cafe2 = new Cafe();
-		cafe2.setName("604");
-		cafe2.setDate(new Date(System.currentTimeMillis()));
-		cafe2.setOrganization(org);
-		cafe2.setManager(new Member());
-		org.addCafe(cafe);
-		org.addCafe(cafe2);
+		
 		// 동성학원 메니저
-		Member orgmanager = new Member();
+		OrganizationManager orgmanager = new OrganizationManager();
 		orgmanager.setName("동성학교장");
 		orgmanager.setId("manager");
 		orgmanager.setPass("1234");
-		orgmanager.addCafe(cafe);
-		orgmanager.addCafe(cafe2);
+		// 동성학교 추가
+		Organization org = new Organization(orgmanager);
+		org.setDate(new Date(System.currentTimeMillis()));
+		org.setUri("dongsung.org");
+		cafeMap.put("dongsung.org",org);
 		orgmanager.setCafe(org);
-		orgmanager.setOrgMember(true);
-		org.setManager(orgmanager);
-		memberList.add(orgmanager);
-		// 테스트 회원 추가
-		Member member = new Member();
-		member.setId("testid");
-		member.setName("테스트 회원");
+		// 동성학교 카페 추가
+		Manager member = new Manager();
+		member.setName("603선생님");
+		member.setId("manager603");
 		member.setPass("1234");
-		member.setEmail("testemail@never.com");
-		memberList.add(member);
+		Cafe cafe = new Cafe(member);
+		cafe.setName("603");
+		cafe.setDate(new Date(System.currentTimeMillis()));
+		member.setCafe(cafe);
+		//
+		Manager member2 = new Manager();
+		member2.setName("604쌤");
+		member2.setId("manager604");
+		member2.setPass("1324");
+		Cafe cafe2 = new Cafe(member2);
+		cafe2.setName("604");
+		cafe2.setDate(new Date(System.currentTimeMillis()));
+		member2.setCafe(cafe2);
+		org.addCafe(cafe);
+		org.addCafe(cafe2);
+		// put
+		memberMap.put(orgmanager.getId(), orgmanager);
+		memberMap.put(member.getId(), orgmanager);
+		// 테스트 회원 추가
+		Member member3 = new Member();
+		member3.setId("test");
+		member3.setName("테스트 회원");
+		member3.setPass("1234");
+		member3.setEmail("testemail@never.com");
+		memberMap.put(member3.getId(), member3);
 		for (int i = 0; i < 10; i++) { // 테스트 회원의 소속 카페 추가
-			Cafe temp = new Cafe();
+			Member temp2 = new Manager();
+			temp2.setName("샘플메니저" + i);
+			temp2.setId("manager1");
+			Cafe temp = new Cafe(temp2);
 			temp.setName("테스트회원이 가입한 카페 " + i);
 			temp.setDetail("카페설명........ " + i);
 			temp.setDate(new Date(System.currentTimeMillis()));
-			Member temp2 = new Member();
-			temp2.setName("샘플메니저" + i);
-			temp.setManager(temp2);
-			member.addCafe(cafe);
+			temp.setUri("testcafe"+i+".cafe");
+			cafeMap.put(temp.getUri(), temp);
 		}
 		// 동성학원의 카페중 하나인 cafe에 테스트 회원 추가
 		cafe.addMember(member);
 	}
 	
-	public ArrayList<Cafe> getCafeBySearchWord(String word) {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		for (Cafe cafe : cafeList) {
-			if(cafe.hasSearchWord(word)){
-				list.add(cafe);
-			}
+	public HashMap<String, Cafe> getAllCafe() {
+		return cafeMap;
+	}
+
+	public boolean isDupCafeName(String orgName) {
+		for(Cafe cafe : cafeMap.values()){
+			if(cafe.getName().equals(orgName))
+				return true;
 		}
-		return list;
-	}
-
-	public ArrayList<Cafe> getAllCafeList() {
-		return cafeList;
-	}
-
-	@SuppressWarnings("unchecked")
-	public JSONArray getJSONArraySample() {
-		JSONArray arr = new JSONArray();
-		// json1
-		JSONObject json1 = new JSONObject();
-		json1.put("title", "제목 1");
-		json1.put("name", "김희택");
-		json1.put("date", "2014-01-27");
-		arr.add(0, json1);
-		// json2
-		JSONObject json2 = new JSONObject();
-		json2.put("title", "제목 2");
-		json2.put("name", "이한일");
-		json2.put("date", "2014-03-22");
-		arr.add(1, json2);
-		return arr;
-	}
-
-	public boolean isDupName(String orgName) {
-		System.out.println(this + " isDUpName is not implemented");
 		return false;
 	}
-
-	public Member getMember(String id){
-		for(Member member : memberList){
-			if(member.getId().equals(id))
-				return member;
+	public HashMap<String, Organization> getOrganizationList() {
+		HashMap<String, Organization> temp = new HashMap<String, Organization>();
+		for(Cafe cafe : cafeMap.values()){
+			if(cafe instanceof Organization)
+				temp.put(cafe.getUri(), (Organization)cafe);
 		}
-		return null;
+		return temp;
 	}
-	public ArrayList<Organization> getOrganizationList() {
-		return this.orgList;
+	
+	public boolean isDupCafeUri(String cafeUri) {
+		for(Cafe cafe : cafeMap.values()){
+			if(cafe.getUri().equals(cafeUri))
+				return true;
+		}
+		return false;
+	}
+	public HashMap<String, Member> getAllMember() {
+		return this.memberMap;
 	}
 
 }

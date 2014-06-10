@@ -3,7 +3,8 @@
 <script>
 	function id_pass_find(){
 		var email = $('#find_email').val();
-		$.get('id_pass_find.ajax?email='+email ,function(result){
+	//	이메일로 아이디 찾기	forget_id.ajax
+		$.get('forget_id.ajax?email='+email ,function(result){
 			$result = $.parseJSON(result);
 			if($result.result == true)
 				alert('메일을 확인해주세요');

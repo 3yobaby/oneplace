@@ -1,12 +1,13 @@
 package com.oneplace.dao;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.oneplace.data.Cafe;
 import com.oneplace.data.Member;
+import com.oneplace.data.Organization;
 import com.util.kht.DAO;
 import com.util.kht.SampleData;
 
@@ -14,50 +15,59 @@ import com.util.kht.SampleData;
 public class CafeDAO extends DAO{
 	private SampleData data = SampleData.getInstance();
 	public CafeDAO() {}
-	
-	public JSONArray getSample(){
-		JSONArray arr = data.getJSONArraySample();
-		return arr;
-	}
 
-	public JSONArray getAllCafeList() {
-		ArrayList<Cafe> list = data.getAllCafeList();
+	public JSONArray getAllCafe() {
+		HashMap<String, Cafe> map = data.getAllCafe();
 		JSONArray array = new JSONArray();
-		for (Cafe cafe : list) {
-			array.add(cafe.toJSONObject());
-		}
-		return array;
-	}
-
-	public JSONArray getCafeList(JSONObject member) {
-		Member temp = data.getMember((String)member.get("id"));
-		ArrayList<Cafe> list = temp.getCafeList();
-		JSONArray array = new JSONArray();
-		for (Cafe cafe : list) {
+		for (Cafe cafe : map.values()) {
 			array.add(cafe.toJSONObject());
 		}
 		return array;
 	}
 	
-	public JSONObject getMyCafe(JSONObject member) {
-		Member temp = data.getMember((String)member.get("id"));
-		Cafe cafe = temp.getCafe();
-		if(cafe != null)
-			return cafe.toJSONObject();
-		else return null;
+	public JSONObject getMember(String id){
+		for(Member member : data.getAllMember().values()){
+			if(member.getId().equals(id)){
+				return member.toJSONObject();
+			}
+		}
+		return null;
 	}
 	
-	public boolean isDupName(String cafeName) {
-		return false;
+	public JSONArray getCafeBySearchWord(String word) {
+		JSONArray array = new JSONArray();
+		HashMap<String, Cafe> map = data.getAllCafe();
+		for(Cafe cafe : map.values()){
+			String[] temp = cafe.getSearchWords().split("|");
+			for(String temp2 : temp){
+				if(temp2.equals(word)){
+					array.add(cafe.toJSONObject());
+				}
+			}
+		}
+		return array;
 	}
 
-	public boolean isDupUri(String cafeUri) {
-		return false;
+	public JSONArray getAllOrganization() {
+		JSONArray array = new JSONArray();
+		HashMap<String, Cafe> map = data.getAllCafe();
+		for(Cafe cafe : map.values()){
+			if(cafe instanceof Organization)
+				array.add(cafe.toJSONObject());
+		}
+		return array;
 	}
 
-	public ArrayList<Cafe> getCafeBySearchWord(String word) {
-		ArrayList<Cafe> list = new ArrayList<Cafe>();
-		list = data.getCafeBySearchWord(word);
-		return list;
+	public JSONObject getCafe(String cafeName) {
+		for (Cafe cafe : data.getAllCafe().values()) {
+			if(cafe.getName().equals(cafeName))
+				return cafe.toJSONObject();
+		}
+		return null;
+	}
+
+	public JSONObject getCafeByUri(String uri) {
+		Cafe cafe = data.getAllCafe().get(uri);
+		return cafe.toJSONObject();
 	}
 }

@@ -10,7 +10,7 @@
 	function modify(form){
 		if(submit)
 			return true;
-		$.get('check_pass.ajax?pass=' +form.pass.value, function(result){
+		$.get('pass_check.ajax?pass=' +form.pass.value, function(result){
 			if(result == "true"){
 				submit = true;
 				alert('수정되었습니다');

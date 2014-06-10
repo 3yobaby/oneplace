@@ -3,6 +3,7 @@ package com.oneplace.data;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.util.kht.JSONObjectAble;
@@ -18,32 +19,17 @@ public class Cafe implements JSONObjectAble{
 	private boolean isOrganization = false;
 	private Member manager;
 	private Organization organization = null;
-	private String searchWords = "";
-	private ArrayList<Member> memberList;
+	private ArrayList<Member> memberList = new ArrayList<Member>();
 	private String uri;
+	private String searchWords = "";
 	
-	public Cafe() {
-		memberList = new ArrayList<Member>();
-	}
-	
-	public void addMember(Member member) {
-		memberList.add(member);
-	}
-	
-	public Organization getOrganization() {
-		return organization;
-	}
-	
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
-	
-	public boolean isOrganization() {
-		return isOrganization;
-	}
-	
-	public void setOrganization(boolean isOrganization) {
-		this.isOrganization = isOrganization;
+	public boolean addMember(Member member) {
+		if(memberList.indexOf(member) == -1){
+			memberList.add(member);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public int getKey() {
@@ -52,9 +38,15 @@ public class Cafe implements JSONObjectAble{
 	public void setKey(int key) {
 		this.key = key;
 	}
+	
+	public Cafe(Member manager) {
+		this.manager = (Manager)manager;
+	}
+	
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -62,67 +54,87 @@ public class Cafe implements JSONObjectAble{
 	public boolean isSearch() {
 		return search;
 	}
+
 	public void setSearch(boolean search) {
 		this.search = search;
 	}
-	public boolean isValid() {
-		return isValid;
-	}
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
-	}
+
 	public Date getDate() {
 		return date;
 	}
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-	
+
 	public String getDetail() {
 		return detail;
 	}
-	
-	public Member getManager() {
-		return manager;
+
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
-	
-	public void setManager(Member manager) {
-		this.manager = manager;
+
+	public boolean isOrganization() {
+		return isOrganization;
 	}
-	
-	public boolean hasSearchWord(String word) {
-		String temp[] = this.searchWords.split("|");
-		for(String t : temp){
-			if(t.equals(word)){
-				return true;
-			}
-		}
-		return false;
+
+	public void setOrganization(boolean isOrganization) {
+		this.isOrganization = isOrganization;
 	}
-	
-	
-	public void setSearchWords(String words){
-		this.searchWords = words;
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
+	public String getSearchWords() {
+		return searchWords;
+	}
+
+	public void setSearchWords(String searchWords) {
+		this.searchWords = searchWords;
+	}
+
+	public ArrayList<Member> getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(ArrayList<Member> memberList) {
+		this.memberList = memberList;
 	}
 
 	public String getUri() {
 		return uri;
 	}
-	
+
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
-	
+
+
 	@Override
 	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
-		json.put("name", new String(this.name));
-		json.put("manager", new String(this.manager.getName()));
-		json.put("date", this.date.toString());
+		JSONArray list = new JSONArray();
+		json.put("key", key);
+		json.put("name", name);
+		json.put("search", search);
+		json.put("isValid", isValid);
+		json.put("date", String.valueOf(date));
 		json.put("detail", detail);
+		json.put("is_organization", isOrganization);
+		json.put("manager", manager.getId());
+		if(organization != null)
+			json.put("organization", organization.getUri());
+		json.put("search_words", searchWords);
+		for (Member member : memberList) {
+			list.add(member.getId());
+		}
+		json.put("member_list", memberList);
 		return json;
 	}
 

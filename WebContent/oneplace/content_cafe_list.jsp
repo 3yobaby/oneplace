@@ -25,30 +25,32 @@
 	var cafe_list;
 	var org_list;
 	function sel_group(val){
+		var uri;
 		switch(val){
 		case 'select_group_all':
 			$('#content_search_result legend').text('전체 카페');
+			uri = "get_all_cafe.ajax";
 			break;
 		case 'select_group_join':
 			$('#content_search_result legend').text('가입 카페');
+			uri = "get_my_join_cafe.ajax";
 			break;
 		case 'select_group_my':
 			$('#content_search_result legend').text('내 카페');
+			uri = "get_my_cafe.ajax";
 			break;
 		case 'select_org':
 			$('#content_search_result legend').text('기관 정보');
-			$.get('org_search.ajax', function(data){
-				org_list = $.parseJSON(data);
-				print_list(org_list);
-			});
+			url = "get_all_organization.ajax"
 			return;
 		}
-		$.get('cafeSearch.ajax?select=' + val , function(data){
+		$.get(uri , function(data){
+			temp = data;
 			cafe_list = $.parseJSON(data);
 			print_list(cafe_list);
 		});
 	}
-	
+	var temp;
 	// result is a array
 	function print_list(result){
 		var num = 1;

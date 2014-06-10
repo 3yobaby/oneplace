@@ -9,8 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+@SuppressWarnings("unchecked")
 public abstract class Ajax {
 	public abstract void execute(String command, HttpServletRequest request, HttpServletResponse response);
+	
+	protected void submit(boolean b, HttpServletResponse response){
+		JSONObject obj = new JSONObject();
+		obj.put("result", b);
+		submit(obj.toString(), response);
+	}
 	
 	protected void submit(JSONObjectAble json, HttpServletResponse response){
 		submit(json.toString(), response);

@@ -2,7 +2,6 @@ package com.oneplace.controller;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.oneplace.ajax.CafeAjax;
-import com.oneplace.ajax.CafeSearchAjax;
 import com.oneplace.ajax.MemberAjax;
-import com.oneplace.ajax.OrganizationAjax;
 import com.util.kht.Ajax;
 import com.util.kht.RequestURIParser;
 
@@ -22,51 +19,39 @@ import com.util.kht.RequestURIParser;
 @WebServlet("*.ajax")
 public class AjaxController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-	}
-    public AjaxController() {
-        super();
-    }
-    
-    @Override
-    public void init() throws ServletException {
-    	super.init();
-    }
-    
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		doProcess(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		doProcess(request, response);
 	}
-	
-	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doProcess(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		String command = RequestURIParser.getAction(request);
 		Ajax ajax = null;
-		switch(command){
-		case "cafeSearch.ajax":
-		case "search_cafe_by_word.ajax":
-			ajax = new CafeSearchAjax();
-			break;
-		case "join_id_check.ajax":
+		switch (command) {
+		// 회원정보 관련
+		case "id_dup_check.ajax":
+		case "forget_id.ajax":
+		case "pass_check.ajax":
 		case "login.ajax":
-		case "check_pass.ajax":
 			ajax = new MemberAjax();
 			break;
-		case "cafe_create_check.ajax":
+		// 카페 정보 관련
+		case "get_all_cafe.ajax":
+		case "get_my_join_cafe.ajax":
+		case "get_my_cafe.ajax":
+		case "get_all_organization.ajax":
+		case "cafe_name_dup_check.ajax":
 			ajax = new CafeAjax();
 			break;
-		case "id_pass_find.ajax":
-			ajax = new MemberAjax();
-			break;
-		case "org_search.ajax":
-			ajax = new OrganizationAjax();
-			break;
 		}
-		if(ajax != null)
+		if (ajax != null)
 			ajax.execute(command, request, response);
 	}
 }
