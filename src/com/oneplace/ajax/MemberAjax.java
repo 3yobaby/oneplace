@@ -7,12 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
-import com.oneplace.dao.MemberDAO;
-import com.oneplace.data.Member;
+import com.oneplace.database.get.MemberDB;
 import com.util.kht.Ajax;
 
 public class MemberAjax extends Ajax{
-	private MemberDAO dao = new MemberDAO();
 	public MemberAjax() {}
 	
 	public void execute(String command, HttpServletRequest request,
@@ -29,6 +27,9 @@ public class MemberAjax extends Ajax{
 		case "login.ajax":
 			login(request, response);
 			break;
+		case "logout.ajax":
+			logout(request, response);
+			break;
 		case "id_dup_check.ajax":
 			idDupCheck(request, response);
 			break;
@@ -38,26 +39,55 @@ public class MemberAjax extends Ajax{
 		case "pass_check.ajax":
 			passCheck(request, response);
 			break;
+		case "join.ajax":
+			join(request, response);
+			break;
 		}
 	}
 	
 	
+	private void logout(HttpServletRequest request, HttpServletResponse response) {
+		request.getSession().setAttribute("member", null);
+		submit(true, response);
+	}
+
+	private void join(HttpServletRequest request, HttpServletResponse response) {
+		// 가입시 유효성 체크
+		String id = request.getParameter("id");
+		String pass = request.getParameter("pass");
+		String email = request.getParameter("email");
+		String name = request.getParameter("name");
+		String tel = request.getParameter("tel");
+		MemberDB db = new MemberDB();
+		if(db.getMember("id") != null){
+			submit(false, response);
+		}else {
+			db = new MemberDB();
+			boolean b = db.addMember(id, pass, email, name, tel);
+			submit(b, response);
+		}
+		db.close();
+	}
+
 	private void forgetId(HttpServletRequest request,
 			HttpServletResponse response) {
+		MemberDB db = new MemberDB();
 		String email = request.getParameter("email");
-		Map<String, Member> map = dao.getAllMember();
-		for (Member member : map.values()) {
-			if(member.getEmail().equals(email)){
+		Map<String, JSONObject> map = db.getAllMember();
+		for (JSONObject member : map.values()) {
+			if(member.get("email").equals(email)){
 				submit(true, response);
 				return;
 			}
 		}
 		submit(false, response);
+		db.close();
 	}
 
 	private void idDupCheck(HttpServletRequest request,
 			HttpServletResponse response) {
-		if(dao.getMember(request.getParameter("id")) == null){
+		MemberDB db = new MemberDB();
+		if(db.getMember(request.getParameter("id")) == null){
 			submit(false, response);
 		}else submit(true, response); // 중복
 	}
@@ -76,14 +106,15 @@ public class MemberAjax extends Ajax{
 		}
 	}
 	private void login(HttpServletRequest request, HttpServletResponse response) {
-		JSONObject json = dao.getMember(request.getParameter("id"), request.getParameter("pass"));
-		if(json != null){
-			submit("true", response);
-			request.getSession().setAttribute("member", json);
-			request.getServletContext().setAttribute("member", json);
+		MemberDB db = new MemberDB();
+		JSONObject member = db.getMember(request.getParameter("id"));
+		if(member != null && member.get("pass").equals(request.getParameter("pass"))){
+			submit(true, response);
+			request.getSession().setAttribute("member", member);
 		}else{
-			submit("false", response);
+			submit(false, response);
 		}
+		db.close();
 	}
 	
 }

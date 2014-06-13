@@ -3,7 +3,9 @@
 <%@page import="org.json.simple.JSONObject"%>
 <script>
 	function member_logout(){
-		location.href = 'logout.do';
+		$.get('logout.ajax', function(){
+			location.href = "./";
+		})
 	}
 	function member_modify(){
 		$.get('oneplace/content_modify_form.jsp', function(data){
@@ -16,7 +18,8 @@
 	<% 
 		JSONObject json = ((JSONObject)session.getAttribute("member"));
 	%>
-	<%= json.get("name")%>님 반갑습니다!<br>
+	아이디 : <%= json.get("id")%><br>
+	이름 : <%= json.get("name")%><br>
 	<button onClick="member_modify();">정보수정</button>
 	<button onclick="member_logout();">로그아웃</button>
 </fieldset>

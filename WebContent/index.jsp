@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.oneplace.data.Member"%>
 <!DOCTYPE html">
 <html>
 <head>
@@ -8,7 +7,17 @@
 <title>Insert title here</title>
 <script src="jquery-1.11.1.min.js" type="text/javascript"></script>
 <script>
-	
+function set_html_content(url){
+	$.get(url, function(html){
+		$('#contents').html(html);
+	});
+}
+
+function set_html_content(url){
+	$.get(url, function(html){
+		$('#contents').html(html);
+	});
+}
 </script>
 <style type="text/css">
 	/* a[class=group_title]{

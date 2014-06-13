@@ -6,12 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.oneplace.dao.CafeDAO;
+import com.oneplace.application.Application;
+import com.oneplace.database.get.CafeDB;
+import com.oneplace.database.get.MemberJoinedCafeDB;
 import com.util.kht.Ajax;
 
-@SuppressWarnings("unchecked")
 public class CafeAjax extends Ajax{
-	private CafeDAO cafedao = new CafeDAO();
 	@Override
 	public void execute(String command, javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) {
 		/*
@@ -26,8 +26,8 @@ public class CafeAjax extends Ajax{
 		case "get_all_cafe.ajax":
 			getAllCafe(request, response);
 			break;
-		case "get_my_join_cafe.ajax":
-			getMyJoinCafe(request, response);
+		case "get_joined_cafe.ajax":
+			getJoinedCafe(request, response);
 			break;
 		case "get_my_cafe.ajax":
 			getMyCafe(request, response);
@@ -41,57 +41,117 @@ public class CafeAjax extends Ajax{
 		case "cafe_name_dup_check.ajax":
 			cafeNameDupCheck(request, response);
 			break;
+		case "get_organization.ajax":
+			getOrganization(request, response);
+			break;
+		case "make_cafe.ajax":
+			makeCafe(request, response);
+			break;
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	private void makeCafe(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject json = new JSONObject();
+		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
+		json.put("manager_id", member.get("id"));
+		json.put("organization_uri", request.getParameter("organization_uri"));
+		json.put("detail", request.getParameter("detail"));
+		json.put("name", request.getParameter("name"));
+		json.put("search_words", request.getParameter("search_words"));
+		json.put("is_search", request.getParameter("is_search"));
+		json.put("join_rule", request.getParameter("join_rule"));
+		json.put("uri", request.getParameter("uri")+".cafe");
+		Application app = new Application();
+		boolean b = app.makeCafe(json);
+		submit(b, response);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void getOrganization(HttpServletRequest request,
+			HttpServletResponse response) {
+		CafeDB db = new CafeDB();
+		JSONObject cafe = db.getCafe(request.getParameter("name"));
+		try{
+			if(cafe.get("is_organization").equals("true")){
+				JSONArray array = new JSONArray();
+				array.add(cafe);
+				submit(array, response);
+			}else{
+				submit("", response);
+			}
+		}catch(Exception e){}
+		finally{
+			db.close();
+		}
+	}
+
+	// to search
 	private void getAllCafe(HttpServletRequest request,
 			HttpServletResponse response) {
-		JSONArray array = cafedao.getAllCafe();
+		CafeDB db = new CafeDB();
+		JSONArray array = db.getAllCafeArray();
 		submit(array, response);
-	}
-	
-	private void getMyJoinCafe(HttpServletRequest request,
-			HttpServletResponse response) {
-		JSONArray array = (JSONArray) request.getAttribute("cafe_list");
-		JSONArray result = new JSONArray();
-		for(int i=0; i< array.size(); i++){
-			result.add(cafedao.getCafeByUri((String)array.get(i)));
-		}
-		submit(result, response);
+		db.close();
 	}
 
+	@SuppressWarnings("unchecked")
+	private void getJoinedCafe(HttpServletRequest request,
+			HttpServletResponse response) {
+		MemberJoinedCafeDB db = new MemberJoinedCafeDB();
+		JSONObject json = (JSONObject) request.getSession().getAttribute("member");
+		JSONArray temp = db.getJoinedCafeArray((String) json.get("id"));
+		JSONArray result = new JSONArray();
+		CafeDB cafedb = new CafeDB();
+		for(int i=0; i<temp.size(); i++){
+			JSONObject obj = (JSONObject) temp.get(i);
+			result.add(cafedb.getCafeByUri((String)obj.get("cafe_uri")));
+		}
+		submit(result, response);
+		db.close();
+		cafedb.close();
+	}
+
+	@SuppressWarnings("unchecked")
 	private void getMyCafe(HttpServletRequest request,
 			HttpServletResponse response) {
+		MemberJoinedCafeDB db = new MemberJoinedCafeDB();
+		CafeDB cafedb = new CafeDB();
 		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
-		try{
-			String uri = (String) member.get("cafe");
-			JSONObject cafe = cafedao.getCafeByUri(uri);
-			submit(cafe, response);
-		}catch(NullPointerException e){
-			e.printStackTrace();
-			submit(new JSONArray(), response);
-		}
+		String id = (String) member.get("id");
+		JSONObject cafe = cafedb.getMyCafe(id);
+		JSONArray result = new JSONArray();
+		result.add(cafe);
+		submit(result, response);
+		db.close();
+		cafedb.close();
 	}
 
 	private void getAllOrganization(HttpServletRequest request,
 			HttpServletResponse response) {
-		JSONArray array = cafedao.getAllOrganization();
+		CafeDB db = new CafeDB();
+		JSONArray array = db.getAllOrganizationArray();
 		submit(array, response);
+		db.close();
 	}
 
 	private void cafeNameDupCheck(HttpServletRequest request,
 			HttpServletResponse response) {
-		JSONObject cafe = cafedao.getCafe(request.getParameter("name"));
+		CafeDB db = new CafeDB();
+		JSONObject cafe = db.getCafe(request.getParameter("name"));
 		if(cafe == null)
 			submit(false, response);
 		else submit(true, response);
+		db.close();
 	}
 	
 	private void getAllCafeByWord(HttpServletRequest request,
 			HttpServletResponse response) {
+		CafeDB db = new CafeDB();
 		String word = request.getParameter("word");
-		CafeDAO dao = new CafeDAO();
-		JSONArray array = dao.getCafeBySearchWord(word);
+		JSONArray array = db.getCafeArrayBySearchWord(word);
 		submit(array, response);
+		db.close();
 	}
 }

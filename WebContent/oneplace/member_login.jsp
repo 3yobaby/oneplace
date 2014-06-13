@@ -6,38 +6,35 @@
 	}
 </style>
 <script>
-	function join_form_join(){
+	function member_form_join(){
 		$.get('oneplace/content_join_form.jsp',function(data){
 			$(contents).html(data);
 		});
 	}
-	function join_form_find(){
+	function member_form_find(){
 		$.get('oneplace/content_inquiry_form.jsp',function(data){
 			$(contents).html(data);
 		});
 	}
-	function login_form_login(id, pass){
+	function member_form_login(v1, v2){
 		var temp = {};	
-		temp.id = id;
-		temp.pass = pass;
+		temp.id = v1;
+		temp.pass = v2;
 		$.post('login.ajax',temp, function(result){
-			alert("result :"  + result);
 			if(result == 'true'){
-				$.get('oneplace/member_login_ok.jsp',function(page){
-					$('#login_form').html(page);
-				});
+				location.href = "./";
 			}else{
 				alert('로그인 실패');
 			}
 		});
 	}
 </script>
-<div id="login_form">
+<div id="member_login">
 	<fieldset>
-		<button onclick="join_form_join();">회원가입</button>
-		<button onclick="join_form_find();">아이디 / 비밀번호 찾기</button>
-		<input type="text" id="login_id" name="login_id" placeholder="아이디"/><br>
-		<input type="password" id="login_pass" name="login_pass" placeholder="비밀번호"/><br>
-		<button onclick="login_form_login(login_id.value, login_pass.value)">로그인</button>
+		<button onclick="member_form_join();">회원가입</button>
+		<button onclick="member_form_find();">아이디 / 비밀번호 찾기</button>
+		<input type="text" id="login_id" placeholder="아이디"/><br>
+		<input type="password" id="login_pass"placeholder="비밀번호"/><br>
+		<button onclick="member_form_login(login_id.value, login_pass.value)">로그인</button>
 	</fieldset>
 </div>

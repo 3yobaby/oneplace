@@ -33,7 +33,7 @@
 			break;
 		case 'select_group_join':
 			$('#content_search_result legend').text('가입 카페');
-			uri = "get_my_join_cafe.ajax";
+			uri = "get_joined_cafe.ajax";
 			break;
 		case 'select_group_my':
 			$('#content_search_result legend').text('내 카페');
@@ -41,8 +41,8 @@
 			break;
 		case 'select_org':
 			$('#content_search_result legend').text('기관 정보');
-			url = "get_all_organization.ajax"
-			return;
+			uri = "get_all_organization.ajax";
+			break;
 		}
 		$.get(uri , function(data){
 			temp = data;
@@ -123,5 +123,5 @@
 	</fieldset>
 	</div>
 	<button onclick="content_cafe_make_form()">카페 만들기</button>
-	<button onclick="location.href = '../CafePlace/testcafe.cafe'">카페 들어가기 테스트</button>
+	<button onclick="location.href = 'dongsung.org'">카페 들어가기 테스트 dongsung.org</button>
 </div>

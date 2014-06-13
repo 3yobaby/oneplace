@@ -9,26 +9,41 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-@SuppressWarnings("unchecked")
 public abstract class Ajax {
 	public abstract void execute(String command, HttpServletRequest request, HttpServletResponse response);
 	
 	protected void submit(boolean b, HttpServletResponse response){
-		JSONObject obj = new JSONObject();
-		obj.put("result", b);
-		submit(obj.toString(), response);
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			if(b){
+				out.print("true");
+			}else{
+				out.print("false");
+			}
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	protected void submit(JSONObjectAble json, HttpServletResponse response){
-		submit(json.toString(), response);
+		if(json == null)
+			submit(new JSONObject().toString(), response);
+		else submit(json.toString(), response);
 	}
 	
 	protected void submit(JSONArray json, HttpServletResponse response){
-		submit(json.toString(), response);
+		if(json == null)
+			submit(new JSONArray().toString(), response);
+		else submit(json.toString(), response);
 	}
 	
 	protected void submit(JSONObject json, HttpServletResponse response){
-		submit(json.toString(), response);
+		if(json == null)
+			submit(new JSONObject().toString(), response);
+		else submit(json.toString(), response);
 	}
 	
 	protected void submit(String command, HttpServletResponse response){
@@ -36,11 +51,12 @@ public abstract class Ajax {
 		PrintWriter out;
 		try {
 			out = response.getWriter();
-			out.append(command);
+			out.print(command);
 			out.flush();
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
 }
