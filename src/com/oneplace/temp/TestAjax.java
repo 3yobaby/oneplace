@@ -9,7 +9,7 @@ import com.oneplace.database.get.BoardDB;
 import com.oneplace.database.get.CafeDB;
 import com.oneplace.database.get.CategoryDB;
 import com.oneplace.database.get.MemberDB;
-import com.oneplace.database.get.MemberJoinedCafeDB;
+import com.oneplace.database.get.CafeMemberDB;
 import com.util.kht.Ajax;
 
 public class TestAjax extends Ajax{
@@ -39,7 +39,7 @@ public class TestAjax extends Ajax{
 			categorydb.close();
 			break;
 		case "memberjoinedcafelist.data":
-			MemberJoinedCafeDB db = new MemberJoinedCafeDB();
+			CafeMemberDB db = new CafeMemberDB();
 			array = db.getAll();
 			db.close();
 			break;

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="org.json.simple.JSONObject"%>
+<div id="content_modify_form">
 <h1>정보수정</h1>
 <%
 	JSONObject member = (JSONObject)request.getSession().getAttribute("member");
@@ -22,7 +23,6 @@
 		return false;
 	}
 </script>
-<div id="content_modify_form">
 <fieldset>
 <legend>회원정보 수정</legend>
 <form method="post" action="modify_member.do" onsubmit="return modify(this)">

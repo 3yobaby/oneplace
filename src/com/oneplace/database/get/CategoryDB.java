@@ -13,16 +13,17 @@ public class CategoryDB extends DatabaseConnector{
 //	  pk number primary key,
 //	  cafe_uri varchar2(60) not null,
 //	  name varchar2(60) not null,
-//	  type varchar2(60) not null,
+//	  type varchar2(10) not null,
+//	  visibility varchar2(10) not null,
 //	  created date not null,
 //	  replied date not null
 	
-//	insert into category values(seq_category.nextval, 'dongsung.org', '자바 카테고리', 'default', sysdate, sysdate);
-	public boolean insertCategory(String cafeUri, String name, String type) {
-		setSql("insert into category values(seq_category.nextval, ?, ?, ?, sysdate,sysdate)");
+	public boolean insertCategory(String cafeUri, String name, String type, String visiblity) {
+		setSql("insert into category values(seq_category.nextval, ?, ?, ?, ?,sysdate,sysdate)");
 		setString(1, cafeUri);
 		setString(2, name);
-		setString(3, "default"); // 미구현
+		setString(3, type);
+		setString(4, visiblity);
 		return insertData();
 	}
 	
@@ -54,6 +55,7 @@ public class CategoryDB extends DatabaseConnector{
 			json.put("type", rs.getString("type"));
 			json.put("created", rs.getDate("created").toString());
 			json.put("replied", rs.getDate("replied").toString());
+			json.put("visibility", rs.getString("visibility"));
 			return json;
 		} catch (SQLException e) {
 			e.printStackTrace();

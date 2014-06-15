@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 
 import com.oneplace.application.Application;
 import com.oneplace.database.get.CafeDB;
-import com.oneplace.database.get.MemberJoinedCafeDB;
+import com.oneplace.database.get.CafeMemberDB;
 import com.util.kht.Ajax;
 
 public class CafeAjax extends Ajax{
@@ -63,6 +63,7 @@ public class CafeAjax extends Ajax{
 		json.put("is_search", request.getParameter("is_search"));
 		json.put("join_rule", request.getParameter("join_rule"));
 		json.put("uri", request.getParameter("uri")+".cafe");
+		json.put("created", request.getParameter("created"));
 		Application app = new Application();
 		boolean b = app.makeCafe(json);
 		submit(b, response);
@@ -99,9 +100,13 @@ public class CafeAjax extends Ajax{
 	@SuppressWarnings("unchecked")
 	private void getJoinedCafe(HttpServletRequest request,
 			HttpServletResponse response) {
-		MemberJoinedCafeDB db = new MemberJoinedCafeDB();
-		JSONObject json = (JSONObject) request.getSession().getAttribute("member");
-		JSONArray temp = db.getJoinedCafeArray((String) json.get("id"));
+		CafeMemberDB db = new CafeMemberDB();
+		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
+		if(member == null){
+			submit(false, response);
+			return;
+		}
+		JSONArray temp = db.getJoinedCafeArray((String) member.get("id"));
 		JSONArray result = new JSONArray();
 		CafeDB cafedb = new CafeDB();
 		for(int i=0; i<temp.size(); i++){
@@ -116,9 +121,13 @@ public class CafeAjax extends Ajax{
 	@SuppressWarnings("unchecked")
 	private void getMyCafe(HttpServletRequest request,
 			HttpServletResponse response) {
-		MemberJoinedCafeDB db = new MemberJoinedCafeDB();
+		CafeMemberDB db = new CafeMemberDB();
 		CafeDB cafedb = new CafeDB();
 		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
+		if(member == null){
+			submit(false, response);
+			return;
+		}
 		String id = (String) member.get("id");
 		JSONObject cafe = cafedb.getMyCafe(id);
 		JSONArray result = new JSONArray();

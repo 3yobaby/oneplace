@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="org.json.simple.JSONObject"%>
+<div id="member_login_ok">
 <script>
 	function member_logout(){
 		$.get('logout.ajax', function(){
@@ -23,3 +24,4 @@
 	<button onClick="member_modify();">정보수정</button>
 	<button onclick="member_logout();">로그아웃</button>
 </fieldset>
+</div>

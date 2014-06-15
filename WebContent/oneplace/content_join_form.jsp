@@ -10,6 +10,7 @@
 		border-color : #eee;
 	}
 </style>
+<div id="content_join_form">
 <script>
 	function isvalid(p1, p2){
 		if(p1.value != p2.value){
@@ -36,7 +37,6 @@
 		});
 	}
 </script>
-<div id="content_join_form">
 <form id="join_form" onsubmit="return isvalid(pass, pass2)">
 	<fieldset>
 		<input type="text" name="id" placeholder="아이디" required/>

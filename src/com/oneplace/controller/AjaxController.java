@@ -41,6 +41,8 @@ public class AjaxController extends HttpServlet {
 		case "login.ajax":
 		case "join.ajax":
 		case "logout.ajax":
+		case "get_all_cafe_member.ajax":;
+		case "remove_member.ajax":
 			ajax = new MemberAjax();
 			break;
 		// 카페 정보 관련
@@ -54,8 +56,9 @@ public class AjaxController extends HttpServlet {
 			ajax = new CafeAjax();
 			break;
 		case "get_all_board.ajax":
-		case "get_category_board.ajax":
 		case "make_board.ajax":
+		case "get_all_my_board.ajax":
+		case "get_board.ajax":
 			ajax = new BoardAjax();
 			break;
 		case "get_all_category.ajax":

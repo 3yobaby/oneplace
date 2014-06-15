@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
-$(document).ready(function(){
-	
-});
-</script>
 <div id="content_default">
 	<fieldset>
 	<legend>최신 글</legend>

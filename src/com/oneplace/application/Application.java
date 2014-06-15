@@ -21,7 +21,7 @@ public class Application {
 		// Generate Default Category
 		CategoryDB cdb = new CategoryDB();
 		for(String categoryName : defaultCategoryName){
-			cdb.insertCategory((String)json.get("uri"), categoryName, "default");	
+			cdb.insertCategory((String)json.get("uri"), categoryName, "default", "all");	
 		}
 		return false;
 	}

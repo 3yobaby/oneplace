@@ -17,6 +17,7 @@
 		float : left;
 	}
 </style>
+<div id="content_cafe_list">
 <script>
 	$(document).ready(function(){
 		sel_group('select_group_all');
@@ -57,19 +58,19 @@
 		$('tbody').empty();
 		$.each(result, function(key, value){
 			var name = value.name;
-			var manager = value.manager;
-			var date = value.date;
+			var manager_id = value.manager_id;
+			var created = value.created;
 			var detail = value.detail;
 			var uri = value.uri;
 			$temp = $('<tr>');
 			$temp.append('<td><p onclick="select_num(this)">'+ num++ +'</p></td>');
 			$temp.append('<td name="title"><p onclick="select_title(this)">'+name + '</p></td>');
-			$temp.append('<td name="name"><p onclick="select_name(this)">'+manager + '</p></td>');
-			$temp.append('<td name="date">'+date + '</td>');
+			$temp.append('<td name="name"><p onclick="select_name(this)">'+manager_id + '</p></td>');
+			$temp.append('<td name="created">'+created + '</td>');
 			$temp.append('<td name="uri" class="hide">'+ uri + '</td>');
 			$temp.append('<td><button onclick="goCafe(this)">들어가기</button</td>');
 			$('tbody').append($temp);
-			$('tbody').append('<tr class="hide"><td><p>'+ detail +'</p></td></tr>');
+			$('tbody').append('<tr class="hide"><td colspan="5"><p>'+ detail +'</p></td></tr>');
 		});
 	}
 	
@@ -101,7 +102,6 @@
 		location.href = uri;
 	}
 </script>
-<div id="content_cafe_list">
 	<div id="navigation_groups">
 	<nav id="group_section">
 		<a id="select_group_all" onclick="sel_group(id)">전체 카페</a>

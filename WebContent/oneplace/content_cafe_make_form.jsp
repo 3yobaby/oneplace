@@ -5,6 +5,7 @@
 		
 	}
 </style>
+<div id="content_cafe_make_form">
 <script>
 	var submit = false;
 	function content_cafe_make(){
@@ -53,7 +54,6 @@
 		});
 	}
 </script>
-<div id="content_cafe_make_form">
 	<form id="cafe_make_form" onsubmit="return content_cafe_make()">
 		<h1>카페 만들기</h1>
 		<input id="cafe_name" name="name" type="text" autofocus="autofocus" placeholder="카페이름"/><br>

@@ -8,15 +8,36 @@ import org.json.simple.JSONObject;
 
 import com.util.kht.DatabaseConnector;
 
-public class MemberJoinedCafeDB extends DatabaseConnector{
+public class CafeMemberDB extends DatabaseConnector{
 	// member_type
 	// 0 가입신청중 1 가입완료-회원 2 관리회원 3 관리자
 //	pk number primary key,
 //	  member_id varchar2(20),
 //	  cafe_uri varchar2(60)
 	
+	public boolean deleteMember(String id, String cafeUri) {
+		setSql("delete from member_joined_cafe where member_id=? and manager_id != ? and cafe_uri=?");
+		setString(1, id);
+		setString(2, id);
+		setString(3, cafeUri);
+		return deleteData();
+	}
+	
 	public JSONArray getAll() {
 		setSql("select * from member_joined_cafe");
+		return getJSONArray();
+	}
+
+	public JSONObject getObject(String cafeUri, String memberId) {
+		setSql("select * from member_joined_cafe where cafe_uri=? and member_id=?");
+		setString(1, cafeUri);
+		setString(2, memberId);
+		return getJSONObject();
+	}
+	
+	public JSONArray getMemberArray(String uri) {
+		setSql("select * from member_joined_cafe where cafe_uri=?");
+		setString(1, uri);
 		return getJSONArray();
 	}
 	
@@ -48,6 +69,5 @@ public class MemberJoinedCafeDB extends DatabaseConnector{
 		}
 		return null;
 	}
-
 
 }

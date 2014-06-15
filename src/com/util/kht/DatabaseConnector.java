@@ -103,5 +103,15 @@ public abstract class DatabaseConnector {
 		return false;
 	}
 	
+	protected boolean deleteData(){
+		try {
+			pstmt.execute();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	protected abstract JSONObject getJSONObjectFromResultset(ResultSet rs);
 }

@@ -1,5 +1,6 @@
 package com.oneplace.database.get;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class CafeDB extends DatabaseConnector{
 	
 	public void insertCafe(String managerId, String organizationUri, String detail, String name, String uri, 
 			String search_words, String isSearch, String isOrganization, int joinRule){
-		setSql("insert into cafe values(seq_cafe.nextval, ?,?,?,?,?, ?,?,?,?,?)");
+		setSql("insert into cafe values(seq_cafe.nextval, ?,?,?,?,?, ?,?,?,?,?,sysdate)");
 		setString(1, managerId);
 		setString(2, organizationUri);
 		setString(3, detail);
@@ -126,6 +127,7 @@ public class CafeDB extends DatabaseConnector{
 			json.put("is_organization", rs.getString("is_organization"));
 			json.put("pk", rs.getString("pk"));
 			json.put("join_rule", rs.getInt("join_rule"));
+			json.put("created", rs.getDate("created").toString());
 			return json;
 		} catch (SQLException e) {
 			e.printStackTrace();

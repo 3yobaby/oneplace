@@ -1,15 +1,13 @@
-package com.oneplace.dao;
+package com.oneplace.temp.dao;
 
 import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.oneplace.data.Cafe;
-import com.oneplace.data.Member;
-import com.oneplace.data.Organization;
-import com.util.kht.ConnectionGetter;
-import com.util.kht.SampleData;
+import com.oneplace.temp.data.Cafe;
+import com.oneplace.temp.data.Member;
+import com.oneplace.temp.data.Organization;
 
 @SuppressWarnings("unchecked")
 public class CafeDAO extends ConnectionGetter{

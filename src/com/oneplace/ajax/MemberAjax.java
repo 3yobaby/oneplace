@@ -4,9 +4,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.oneplace.database.get.CafeMemberDB;
 import com.oneplace.database.get.MemberDB;
 import com.util.kht.Ajax;
 
@@ -42,10 +45,43 @@ public class MemberAjax extends Ajax{
 		case "join.ajax":
 			join(request, response);
 			break;
+		case "get_all_cafe_member.ajax":
+			getAllCafeMember(request, response);
+			break;
+		case "remove_member.ajax":
+			removeMember(request, response);
+			break;
 		}
 	}
-	
-	
+
+	private void removeMember(HttpServletRequest request,
+			HttpServletResponse response) {
+		String id = request.getParameter("id");
+		HttpSession session = request.getSession();
+		int memberType = (int) session.getAttribute("member_type");
+		if(memberType >= 4){ // 수정요망
+			JSONObject cafe = (JSONObject) session.getAttribute("cafe");
+			CafeMemberDB db = new CafeMemberDB();
+			db.deleteMember(id, (String)cafe.get("uri"));
+			db.close();
+			submit(true, response);
+		}else{
+			submit(false, response);
+		}
+	}
+
+	private void getAllCafeMember(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject cafe = (JSONObject) request.getSession().getAttribute("cafe");
+		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
+		if(cafe.get("manager_id").equals(member.get("id"))){ // 메니저 인증
+			CafeMemberDB db = new CafeMemberDB();
+			JSONArray result = db.getMemberArray((String) cafe.get("uri"));
+			submit(result, response);
+			db.close();
+		}
+	}
+
 	private void logout(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().setAttribute("member", null);
 		submit(true, response);

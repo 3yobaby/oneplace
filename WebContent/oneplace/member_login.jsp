@@ -5,6 +5,7 @@
 		width : 100%
 	}
 </style>
+<div id="member_login">
 <script>
 	function member_form_join(){
 		$.get('oneplace/content_join_form.jsp',function(data){
@@ -29,7 +30,6 @@
 		});
 	}
 </script>
-<div id="member_login">
 	<fieldset>
 		<button onclick="member_form_join();">회원가입</button>
 		<button onclick="member_form_find();">아이디 / 비밀번호 찾기</button>

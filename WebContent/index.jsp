@@ -87,7 +87,7 @@ function set_html_content(url){
 </head>
 <body>
 <header id="header">
-	<h1>검색 페이지</h1>
+	<h1><a href="./">검색 페이지</a></h1>
 </header>
 <aside id="member_info">
 	<nav>

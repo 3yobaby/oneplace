@@ -18,14 +18,18 @@ public class BoardDB extends DatabaseConnector{
 //	  replied date,
 //	  replies number,
 //	  is_valid varchar2(5)
-	
 	/*
 	 * set
 	 */
 	
 	public boolean insertBoard(int categoryPk, String id, String name, String title, String content) {
-//insert into board values(seq_board.nextval,1,'이한일','lhi','와','잘만들었네요', sysdate, sysdate, 0, 'true');
-		setSql("insert into board values(seq_board_nextval, ?, ?, ?, ?, ?, sysdate, sysdate, 0, 'true')");
+//		insert into board values(        seq_board.nextval, 1,'이한일','lhi','와','잘만들었네요', sysdate, sysdate, 0, 'true');
+		setSql("insert into board values(seq_board.nextval, ?,     ?,    ?,   ?,         ?, sysdate, sysdate, 0, 'true')");
+		setInt(1, categoryPk);
+		setString(2, name);
+		setString(3, id);
+		setString(4, title);
+		setString(5, content);
 		return insertData();
 	}
 	
@@ -34,8 +38,35 @@ public class BoardDB extends DatabaseConnector{
 	 */
 	
 	public JSONArray getAllBoardArray(int categoryPk) {
-		setSql("select * from board where fk_category=?");
+		setSql("select * from board where fk_category=? order by pk desc");
 		setInt(1, categoryPk);
+		return getJSONArray();
+	}
+	
+	// 내 글 보기
+	public JSONArray getAllBoardArray(int pk, String id) {
+		setSql("select * from board where fk_category=? and id=?");
+		setInt(1, pk);
+		setString(2, id);
+		return getJSONArray();
+	}
+	
+	// 조건 검색
+	// type = "title", "name", "id"
+	public JSONArray getAllBoardArray(int categoryPk, String type, String string) {
+		switch(type){
+		case "title":
+			setSql("select * from board where fk_category=? and title like ?");
+			break;
+		case "name":
+			setSql("select * from board where fk_category=? and name=?");
+			break;
+		case "id":
+			setSql("select * from board where fk_category=? and id=?");
+			break;
+		}
+		setInt(1, categoryPk);
+		setString(2, "%"+string+"%");
 		return getJSONArray();
 	}
 	
@@ -63,4 +94,6 @@ public class BoardDB extends DatabaseConnector{
 		}catch(Exception e){e.printStackTrace();}
 		return null;
 	}
+
+
 }

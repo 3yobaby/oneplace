@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<div id="write_form">
 <script>
 	var oEditors = [];
 	nhn.husky.EZCreator.createInIFrame({
@@ -10,26 +10,21 @@
 	    fCreator: "createSEditor2"
 	});
 	function content_write_submit(){
-		var data = {};
-		data.title = $('form')[0].title.value;
-		data.content = oEditors.getById['content'].getContents();
-		data.category = category;
-		data.reference = 0;
-		oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
-		$.post('make_board.ajax', data, function(result){
-			if(result == "true"){
-				$.post('cafe/content_board.jsp?category_name=',function(page){
-					$('#contents').html(page);
-				});
-			}
-		});
+		
 		return false;
 	}
+	
+	function write_form_cancel(){
+		$('#write_form').html('');
+	}
+	$('#write_form #title').val('re : ' + $board[0].title);
 </script>
-<h2>글쓰기</h2>
+<h2 id="write_form_header"></h2>
 <form>
-	<input type="text" id="title" name="title" placeholder="제목" size="40"/><br>
-	<textarea name="content" id="content" rows="10" cols="100"></textarea>
+	<input type="text" name="title" placeholder="제목" size="40" readonly="readonly"/><br>
+	<textarea name="content" rows="10" cols="100"></textarea>
+	<input type="hidden" name="content"/>
 	<input type="button" onclick="content_write_submit()" value="확인"/>
-	<input type="button" value="취소"/>
+	<input type="button" value="취소" onclick="return write_form_cancel()"/>
 </form>
+</div>

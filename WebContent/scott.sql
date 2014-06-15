@@ -14,10 +14,10 @@ create table board(
 );
 drop sequence seq_board;
 create sequence seq_board;
-insert into board values(seq_board.nextval,1,'°ü¸®ÀÚ','manager','ÀÚ¹Ù Ä«Å×°í¸® ±ÛÀÔ´Ï´Ù','ÀÚ¹Ù°¡ Á¦ÀÏ ½¬¿ü¾î¿ä', sysdate, sysdate, 0, 'true');
-insert into board values(seq_board.nextval,1,'ÀÌÇÑÀÏ','lhi','¿Í','Àß¸¸µé¾ú³×¿ä', sysdate, sysdate, 0, 'true');
-insert into board values(seq_board.nextval,2,'°ü¸®ÀÚ','manager','¾Èµå·ÎÀÌµå Ä«Å×°í¸® ±ÛÀÔ´Ï´Ù','¾Èµå´Â ¾î·Á¿ö', sysdate, sysdate, 0, 'true');
-select * from board;
+insert into board values(seq_board.nextval,1,'dongsung','ê´€ë¦¬ì','ìë°” ì¹´í…Œê³ ë¦¬ ê¸€ì…ë‹ˆë‹¤','ìë°”ê°€ ì œì¼ ì‰¬ì› ì–´ìš”', sysdate, sysdate, 0, 'true');
+insert into board values(seq_board.nextval,1,'lhi','ì´í•œì¼','ì™€','ì˜ë§Œë“¤ì—ˆë„¤ìš”', sysdate, sysdate, 0, 'true');
+insert into board values(seq_board.nextval,2,'dongsung','ê´€ë¦¬ì','ì•ˆë“œë¡œì´ë“œ ì¹´í…Œê³ ë¦¬ ê¸€ì…ë‹ˆë‹¤','ì•ˆë“œëŠ” ì–´ë ¤ì›Œ', sysdate, sysdate, 0, 'true');
+select * from board where fk_category=1 and title like '%ìë°”%';
 commit;
 ------------------- cafe
 drop table cafe;
@@ -32,12 +32,13 @@ create table cafe(
   is_search varchar2(5) not null,
   is_valid varchar2(5) not null,
   is_organization varchar2(5) not null,
-  join_rule number
+  join_rule number,
+  created date not null
 );
 drop sequence seq_cafe;
 create sequence seq_cafe;
-insert into cafe values(seq_cafe.nextval, 'dongsung', 'dongsung.org', '»ó¼¼¼³¸í...', 'µ¿¼ºÇĞ¿ø', 'dongsung.org', 'µ¿¼º|ÇĞ¿ø|ÀÚ¹Ù', 'true', 'true', 'true', 1);
-insert into cafe values(seq_cafe.nextval, '3yobaby', '', '¸¸µçÀÌ : ±èÈñÅÃ', 'ÀÚ¹Ù½ºÅÍµğ', 'khtcafe.cafe', 'ÀÚ¹Ù|À¥|¾Èµå·ÎÀÌµå', 'true', 'true', 'false', 1);
+insert into cafe values(seq_cafe.nextval, 'dongsung', 'dongsung.org', 'ìƒì„¸ì„¤ëª…...', 'ë™ì„±í•™ì›', 'dongsung.org', 'ë™ì„±|í•™ì›|ìë°”', 'true', 'true', 'true', 1, sysdate);
+insert into cafe values(seq_cafe.nextval, '3yobaby', '', 'ë§Œë“ ì´ : ê¹€í¬íƒ', 'ìë°”ìŠ¤í„°ë””', 'khtcafe.cafe', 'ìë°”|ì›¹|ì•ˆë“œë¡œì´ë“œ', 'true', 'true', 'false', 1, sysdate);
 select * from cafe;
 commit;
 
@@ -47,17 +48,18 @@ create table category(
   pk number primary key,
   cafe_uri varchar2(60) not null,
   name varchar2(60) not null,
-  type varchar2(60) not null,
+  type varchar2(10) not null,
+  visibility varchar2(10) not null,
   created date not null,
   replied date not null
 );
 drop sequence seq_category;
 create sequence seq_category;
-insert into category values(seq_category.nextval, 'dongsung.org', 'ÀÚ¹Ù Ä«Å×°í¸®', 'default', sysdate, sysdate);
-insert into category values(seq_category.nextval, 'dongsung.org', '¾Èµå·ÎÀÌµå', 'default', sysdate, sysdate);
+insert into category values(seq_category.nextval, 'dongsung.org', 'ìë°” ì¹´í…Œê³ ë¦¬', 'default', 'all', sysdate, sysdate);
+insert into category values(seq_category.nextval, 'dongsung.org', 'ì•ˆë“œë¡œì´ë“œ', 'default', 'all', sysdate, sysdate);
 select * from category;
 commit;
-
+-------------------------------member
 drop table member;
 create table member(
   pk number primary key,
@@ -70,9 +72,10 @@ create table member(
 );
 drop sequence seq_member;
 create sequence seq_member;
-insert into member values(seq_member.nextval, 'tester', '1234','Å×½ºÅÍ','test@test.com', '010-1111-1111', sysdate);
-insert into member values(seq_member.nextval, 'lee', '1234','ÀÌÇÑÀÏ','lee@han.il', '116', sysdate);
-insert into member values(seq_member.nextval, '3yobaby', '1234', '±èÈñÅÃ','minionofdiablo@nate.com','010-6688-2199', sysdate);
+insert into member values(seq_member.nextval, 'tester', '1234','í…ŒìŠ¤í„°','test@test.com', '010-1111-1111', sysdate);
+insert into member values(seq_member.nextval, 'lee', '1234','ì´í•œì¼','lee@han.il', '116', sysdate);
+insert into member values(seq_member.nextval, '3yobaby', '1234', 'ê¹€í¬íƒ','minionofdiablo@nate.com','010-6688-2199', sysdate);
+insert into member values(seq_member.nextval, 'dongsung', '1234', 'ë™ì„±í•™ì›ì¥','','051-', sysdate);
 select * from member;
 commit;
 
@@ -88,5 +91,7 @@ drop sequence seq_member_joined_cafe;
 create sequence seq_member_joined_cafe;
 insert into member_joined_cafe values(seq_member_joined_cafe.nextval, '3yobaby', 'dongsung' , 'dongsung.org', 1);
 insert into member_joined_cafe values(seq_member_joined_cafe.nextval, '3yobaby', '3yobaby' , 'khtcafe.cafe', 1);
+insert into member_joined_cafe values(seq_member_joined_cafe.nextval, 'dongsung', 'dongsung' , 'dongsung.org', 4);
+delete from member_joined_cafe where member_id='dongsung' and manager_id != 'dongsung';
 select * from member_joined_cafe;
 commit;

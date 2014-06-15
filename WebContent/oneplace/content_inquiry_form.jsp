@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<div id="content_inquriy_form">
 <script>
 	function id_pass_find(){
 		var email = $('#find_email').val();
@@ -12,7 +13,6 @@
 		});
 	}
 </script>
-<div id="content_inquriy_form">
 	이메일 <input id="find_email" type="email" name="email"/>
 	<button onclick="id_pass_find()">아이디/비밀번호 찾기</button>
 </div>
