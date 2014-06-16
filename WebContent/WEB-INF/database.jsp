@@ -18,7 +18,7 @@
 			}
 			$('#cafelist').html($('#cafelist').html() + text + "<hr>");
 		})
-	})
+	});
 	$.get('memberlist.data', function(result){
 		result = $.parseJSON(result);
 		$.each(result, function(index, val){

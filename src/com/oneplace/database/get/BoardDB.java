@@ -10,6 +10,7 @@ import com.util.kht.DatabaseConnector;
 public class BoardDB extends DatabaseConnector{
 //	  pk number primary key,
 //	  fk_category number,
+//	  fk_board number,
 //	  id varchar2(40) not null,
 //	  name varchar2(20) not null,
 //	  title varchar2(60) not null,
@@ -21,6 +22,23 @@ public class BoardDB extends DatabaseConnector{
 	/*
 	 * set
 	 */
+	
+	public boolean updateReply(int boardPk, String id, String name, String title, String content) {
+		setSql("update board set replied=sysdate, replies=replies+1 where pk=?");
+		setInt(1, boardPk);
+		int num = updateData();
+		// insert into board values(seq_board.nextval, (select fk_category from board where pk=1), pk
+		// 'lhi','이한일','와','잘만들었네요', sysdate, sysdate, 0, 'true');
+		setSql("insert into board values(seq_board.nextval, (select b.fk_category from board b where pk=?), ?, "
+				+ " ?,?,?,?,sysdate,sysdate, 0, 'true')");
+		setInt(1, boardPk);
+		setInt(2, boardPk);
+		setString(3, id);
+		setString(4, name);
+		setString(5, title);
+		setString(6, content);
+		return insertData();
+	}
 	
 	public boolean insertBoard(int categoryPk, String id, String name, String title, String content) {
 //		insert into board values(        seq_board.nextval, 1,'이한일','lhi','와','잘만들었네요', sysdate, sysdate, 0, 'true');
@@ -37,9 +55,17 @@ public class BoardDB extends DatabaseConnector{
 	 * get 
 	 */
 	
+	// 원글만
 	public JSONArray getAllBoardArray(int categoryPk) {
-		setSql("select * from board where fk_category=? order by pk desc");
+		setSql("select * from board where fk_category=? order by fk_board desc, pk asc");
 		setInt(1, categoryPk);
+		return getJSONArray();
+	}
+	
+	// 리플 
+	public JSONArray getAllReplies(int boardPk){
+		setSql("select * from board where fk_board=? and pk <> fk_board");
+		setInt(1, boardPk);
 		return getJSONArray();
 	}
 	
@@ -82,6 +108,7 @@ public class BoardDB extends DatabaseConnector{
 			JSONObject json = new JSONObject();
 			json.put("pk", rs.getInt("pk"));
 			json.put("fk_category", rs.getInt("fk_category"));
+			json.put("fk_board", rs.getInt("fk_board"));
 			json.put("name", rs.getString("name"));
 			json.put("id", rs.getString("id"));
 			json.put("title", rs.getString("title"));
@@ -94,6 +121,5 @@ public class BoardDB extends DatabaseConnector{
 		}catch(Exception e){e.printStackTrace();}
 		return null;
 	}
-
 
 }

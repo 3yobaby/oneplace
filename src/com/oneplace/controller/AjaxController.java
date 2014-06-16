@@ -59,6 +59,7 @@ public class AjaxController extends HttpServlet {
 		case "make_board.ajax":
 		case "get_all_my_board.ajax":
 		case "get_board.ajax":
+		case "reply_board.ajax":
 			ajax = new BoardAjax();
 			break;
 		case "get_all_category.ajax":

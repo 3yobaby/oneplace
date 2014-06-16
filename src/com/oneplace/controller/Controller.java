@@ -37,12 +37,15 @@ public class Controller extends HttpServlet {
 			CafeMemberDB cafemember = new CafeMemberDB();
 			JSONObject cafeMember = cafemember.getObject((String)cafe.get("uri"), (String)member.get("id")); // 카페 회원타입을 가져오기 위해서
 			cafemember.close();
-			session.setAttribute("member_type", (int)cafeMember.get("member_type"));
+			if(cafeMember == null)
+				session.setAttribute("member_type", 0);
+			else session.setAttribute("member_type", (int)cafeMember.get("member_type"));
+			session.setAttribute("cafe", cafe);
+			session.setAttribute("categories", categories);
+			request.getRequestDispatcher("/cafe/index.jsp").forward(request, response);
 		}else{
 			session.setAttribute("member_type", 0);
+			response.sendRedirect("./");
 		}
-		session.setAttribute("cafe", cafe);
-		session.setAttribute("categories", categories);
-		request.getRequestDispatcher("/cafe/index.jsp").forward(request, response);
 	}
 }

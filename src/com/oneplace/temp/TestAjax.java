@@ -7,9 +7,9 @@ import org.json.simple.JSONArray;
 
 import com.oneplace.database.get.BoardDB;
 import com.oneplace.database.get.CafeDB;
+import com.oneplace.database.get.CafeMemberDB;
 import com.oneplace.database.get.CategoryDB;
 import com.oneplace.database.get.MemberDB;
-import com.oneplace.database.get.CafeMemberDB;
 import com.util.kht.Ajax;
 
 public class TestAjax extends Ajax{

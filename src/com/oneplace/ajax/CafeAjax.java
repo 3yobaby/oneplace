@@ -55,6 +55,10 @@ public class CafeAjax extends Ajax{
 			HttpServletResponse response) {
 		JSONObject json = new JSONObject();
 		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
+		if(member == null){
+			submit(false, response);
+			return;
+		}
 		json.put("manager_id", member.get("id"));
 		json.put("organization_uri", request.getParameter("organization_uri"));
 		json.put("detail", request.getParameter("detail"));

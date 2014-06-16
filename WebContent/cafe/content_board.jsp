@@ -10,7 +10,6 @@
 </style>
 <div id="content_board">
 <script>
-	var $board;
 	$('#content_board_category_title').html(category);
 	$(document).ready(function(){
 		set_board($boards);
@@ -24,8 +23,24 @@
 			$td += "<td>"+board.name+"</td>"
 			$td += "<td>"+board.id+"</td>"
 			$td += "<td>"+board.created+"</td>"
-			$td += "<td>"+board.replies+"</td>"
+			$td += "<td class='"+ board.pk+"'><p onclick='get_reply(this)'>"+board.replies+"</p></td>"
 			$('<tr>').appendTo($tbody).append($td);
+		});
+	}
+	var $selected_board;
+	var $replies;
+	function get_reply(val){
+		if($replies != null)
+			$replies.remove();
+		$selected_board = $(val);
+		var pk = $(val).parent().attr('class');
+		$.get('get_all_reply.ajax?pk='+pk, function(result){
+			replies = $.parseJSON(result);;
+			$.each(replies, function(index, board){
+				var $tr= $('<tr>');
+				$tr.append('<td></td><td colspan="5" class='+ board.pk+'>' + board.title + '</td>');
+				$selected_board.parent().parent().after($tr);
+			});
 		});
 	}
 	

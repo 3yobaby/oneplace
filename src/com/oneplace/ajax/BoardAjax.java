@@ -28,10 +28,30 @@ public class BoardAjax extends Ajax{
 		case "get_all_my_board.ajax":
 			getAllMyBoard(request, response);
 			break;
+		case "reply_board.ajax":
+			replyBoard(request, response);
+			break;
 		}
 	}
 
-	
+	private void replyBoard(HttpServletRequest request,
+			HttpServletResponse response) {
+		String content = request.getParameter("content");
+		String pk = request.getParameter("pk");
+		String title = request.getParameter("title");
+		// member
+		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
+		if(member == null)
+			return;
+		String id = (String) member.get("id");
+		String name = (String) member.get("name");
+		BoardDB db = new BoardDB();
+		// 원래 글의 replies, replied 갱신
+		db.updateReply(Integer.valueOf(pk), id, name, title, content);
+		db.close();
+	}
+
+
 	@SuppressWarnings("unchecked")
 	private void getAllBoard(HttpServletRequest request,
 			HttpServletResponse response) {

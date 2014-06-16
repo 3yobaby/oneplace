@@ -25,5 +25,8 @@ public class Application {
 		}
 		return false;
 	}
-	
+	public JSONObject getDefaultMember(){
+		JSONObject member = new JSONObject();
+		return member;
+	}
 }

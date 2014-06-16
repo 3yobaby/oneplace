@@ -3,6 +3,7 @@ drop table board;
 create table board(
   pk number primary key,
   fk_category number,
+  fk_board number,
   id varchar2(40) not null,
   name varchar2(20) not null,
   title varchar2(60) not null,
@@ -14,10 +15,11 @@ create table board(
 );
 drop sequence seq_board;
 create sequence seq_board;
-insert into board values(seq_board.nextval,1,'dongsung','관리자','자바 카테고리 글입니다','자바가 제일 쉬웠어요', sysdate, sysdate, 0, 'true');
-insert into board values(seq_board.nextval,1,'lhi','이한일','와','잘만들었네요', sysdate, sysdate, 0, 'true');
-insert into board values(seq_board.nextval,2,'dongsung','관리자','안드로이드 카테고리 글입니다','안드는 어려워', sysdate, sysdate, 0, 'true');
-select * from board where fk_category=1 and title like '%자바%';
+insert into board values(seq_board.nextval,1,seq_board.nextval,'dongsung','관리자','자바 카테고리 글입니다','자바가 제일 쉬웠어요', sysdate, sysdate, 1, 'true');
+insert into board values(seq_board.nextval,1,seq_board.nextval,'lhi','이한일','와','잘만들었네요', sysdate, sysdate, 0, 'true');
+insert into board values(seq_board.nextval,2,seq_board.nextval,'dongsung','관리자','안드로이드 카테고리 글입니다','안드는 어려워', sysdate, sysdate, 0, 'true');
+insert into board values(seq_board.nextval,1,1,'dongsung','관리자','re : 자바 카테고리 글입니다','답글', sysdate, sysdate, 0, 'true');
+select * from board where fk_category=1 order by fk_board desc, pk asc;
 commit;
 ------------------- cafe
 drop table cafe;

@@ -103,6 +103,16 @@ public abstract class DatabaseConnector {
 		return false;
 	}
 	
+	protected int updateData(){
+		try {
+			int num = pstmt.executeUpdate();
+			return num;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	protected boolean deleteData(){
 		try {
 			pstmt.execute();

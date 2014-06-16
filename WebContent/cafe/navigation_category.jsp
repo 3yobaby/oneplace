@@ -4,6 +4,7 @@
 <script>
 	var $categories;
 	var $boards;
+	var $board;
 	$(document).ready(function(){
 		$.get('get_all_category.ajax', function(categories){
 			$categories = $.parseJSON(categories);
