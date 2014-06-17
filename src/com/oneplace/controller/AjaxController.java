@@ -53,6 +53,7 @@ public class AjaxController extends HttpServlet {
 		case "get_organization.ajax":
 		case "cafe_name_dup_check.ajax":
 		case "make_cafe.ajax":
+		case "modify_cafe_organization.ajax":
 			ajax = new CafeAjax();
 			break;
 		case "get_all_board.ajax":
@@ -63,6 +64,7 @@ public class AjaxController extends HttpServlet {
 			ajax = new BoardAjax();
 			break;
 		case "get_all_category.ajax":
+		case "modify_category.ajax":
 			ajax = new CategoryAjax();
 			break;
 		}

@@ -18,6 +18,17 @@ public class CategoryDB extends DatabaseConnector{
 //	  created date not null,
 //	  replied date not null
 	
+	/*
+	 * set, update
+	 */
+	public int updateCategory(int pk, String name, String visibility) {
+		setSql("update category set name=?, visibility=? where pk=?");
+		setString(1, name);
+		setString(2, visibility);
+		setInt(3, pk);
+		return updateData();
+	}
+	
 	public boolean insertCategory(String cafeUri, String name, String type, String visiblity) {
 		setSql("insert into category values(seq_category.nextval, ?, ?, ?, ?,sysdate,sysdate)");
 		setString(1, cafeUri);
@@ -25,6 +36,16 @@ public class CategoryDB extends DatabaseConnector{
 		setString(3, type);
 		setString(4, visiblity);
 		return insertData();
+	}
+
+	/*
+	 * get
+	 */
+	
+	public JSONObject getCategoryObject(int categoryPk) {
+		setSql("select * from category where pk=?");
+		setInt(1, categoryPk);
+		return getJSONObject();
 	}
 	
 	public HashMap<String, JSONObject> getAllCategoryMap(String cafePk) {
@@ -62,6 +83,5 @@ public class CategoryDB extends DatabaseConnector{
 		}
 		return null;
 	}
-
 
 }

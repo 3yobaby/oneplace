@@ -8,6 +8,7 @@ import org.json.simple.JSONArray;
 import com.oneplace.database.get.BoardDB;
 import com.oneplace.database.get.CafeDB;
 import com.oneplace.database.get.CafeMemberDB;
+import com.oneplace.database.get.CafeOrganizationDB;
 import com.oneplace.database.get.CategoryDB;
 import com.oneplace.database.get.MemberDB;
 import com.util.kht.Ajax;
@@ -42,6 +43,11 @@ public class TestAjax extends Ajax{
 			CafeMemberDB db = new CafeMemberDB();
 			array = db.getAll();
 			db.close();
+			break;
+		case "cafeorglist.data":
+			CafeOrganizationDB db2 = new CafeOrganizationDB();
+			array = db2.getAllArray();
+			db2.close();
 			break;
 		}
 		if(array == null)

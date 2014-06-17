@@ -2,11 +2,13 @@ package com.oneplace.ajax;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.oneplace.database.get.BoardDB;
+import com.oneplace.database.get.CategoryDB;
 import com.util.kht.Ajax;
 import com.util.kht.JSONArraySerializer;
 
@@ -64,7 +66,9 @@ public class BoardAjax extends Ajax{
 			array.add(db.getAllBoardArray(key));
 		}
 		db.close();
-		submit(JSONArraySerializer.serialize(array), response);
+		array = JSONArraySerializer.serialize(array);
+		request.getSession().setAttribute("boards", array);
+		submit(true, response);
 	}
 
 	// 카페 내에서 내가 쓴 글 확인
@@ -85,47 +89,44 @@ public class BoardAjax extends Ajax{
 
 	private void makeBoard(HttpServletRequest request,
 			HttpServletResponse response) {
-		BoardDB db = new BoardDB();
 		//
-		String categoryTitle = request.getParameter("category");
 		JSONArray categories = (JSONArray) request.getSession().getAttribute("categories");
-		int categoryPk = 0;
-		for(int i=0 ;i<categories.size(); i++){
-			JSONObject json = (JSONObject) categories.get(i);
-			if(json.get("name").equals(categoryTitle)){
-				categoryPk = (int) json.get("pk");
-			}
-		}
-		//
-		if(categoryPk == 0){ // 카테고리 없음 
-			submit(false, response);
-			System.out.println("카테고리 없음");
-			return;
-		}
+		String categoryPk = request.getParameter("category_pk");
 		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
 		String name = (String) member.get("name");
 		String id = (String) member.get("id");
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
-		submit(db.insertBoard(categoryPk, id, name, title, content), response);
-		db.close();
+		// 유효성
+		for(int i=0; i<categories.size(); i++){
+			JSONObject category = (JSONObject)categories.get(i);
+			if(Integer.valueOf(categoryPk).equals(category.get("pk"))){
+				BoardDB db = new BoardDB();
+				db.insertBoard(Integer.valueOf(categoryPk), id, name, title, content);
+				submit(true, response);
+				db.close();
+				return;
+			}
+		}
+		submit(false, response);
 	}
 
 	private void getBoard(HttpServletRequest request,
 			HttpServletResponse response) {
-		// 접속된 카페의 정보와, 사용자의 카페의 권한을 확인 후 돌려준다
-		JSONArray categories = (JSONArray) request.getSession().getAttribute("categories");
-		JSONArray result = null;
-		String name = request.getParameter("category");
-		for(int i=0; i<categories.size(); i++){
-			JSONObject category = (JSONObject)categories.get(i);
-			if(category.get("name").equals(name)){
-				BoardDB db = new BoardDB();
-				result = db.getAllBoardArray((int) category.get("pk"));
-				db.close();
-			}
+		int categoryPk = Integer.valueOf(request.getParameter("pk"));
+		BoardDB db = new BoardDB();
+		HttpSession session = request.getSession();
+		JSONArray result = db.getAllBoardArray(categoryPk);
+		CategoryDB cdb = new CategoryDB();
+		JSONObject category = cdb.getCategoryObject(categoryPk);
+		session.setAttribute("category", category);
+		session.setAttribute("boards", result);
+		if(result != null){
+			submit(true, response);
+		}else{
+			submit(false, response);
 		}
-		submit(result, response);
+		db.close();
 	}
 
 }

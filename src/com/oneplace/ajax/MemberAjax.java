@@ -59,12 +59,14 @@ public class MemberAjax extends Ajax{
 		String id = request.getParameter("id");
 		HttpSession session = request.getSession();
 		int memberType = (int) session.getAttribute("member_type");
-		if(memberType >= 4){ // 수정요망
+		if(memberType >= 3){ // 카페 관리자 이상
 			JSONObject cafe = (JSONObject) session.getAttribute("cafe");
 			CafeMemberDB db = new CafeMemberDB();
-			db.deleteMember(id, (String)cafe.get("uri"));
+			int result = db.deleteMember(id, (String)cafe.get("uri"));
 			db.close();
-			submit(true, response);
+			if(result > 0)
+				submit(true, response);
+			else submit(false, response);
 		}else{
 			submit(false, response);
 		}

@@ -1,5 +1,11 @@
+<%@page import="org.json.simple.JSONObject"%>
+<%@page import="org.json.simple.JSONArray"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+JSONArray boards = (JSONArray)session.getAttribute("boards");
+JSONObject category = (JSONObject)session.getAttribute("category");
+%>
     <style>
 	#content_board table {
 		
@@ -7,96 +13,76 @@
 	#content_board #search_form{
 		display: inline;
 	}
+	
+	#board_title {
+		cursor: default;
+	}
 </style>
 <div id="content_board">
 <script>
-	$('#content_board_category_title').html(category);
-	$(document).ready(function(){
-		set_board($boards);
-	});
-	function set_board($val){
-		$tbody = $('#content_board tbody');
-		$tbody.html('');
-		$.each($val, function(index, board){
-			var $td = "<td>"+board.pk+"</td>";
-			$td += "<td><p onclick='show_content(this)'>"+board.title+"</p></td>"
-			$td += "<td>"+board.name+"</td>"
-			$td += "<td>"+board.id+"</td>"
-			$td += "<td>"+board.created+"</td>"
-			$td += "<td class='"+ board.pk+"'><p onclick='get_reply(this)'>"+board.replies+"</p></td>"
-			$('<tr>').appendTo($tbody).append($td);
-		});
+	function select_title(tag){
+		$(tag).parent().parent().next().children().toggleClass('hide');
 	}
-	var $selected_board;
-	var $replies;
-	function get_reply(val){
-		if($replies != null)
-			$replies.remove();
-		$selected_board = $(val);
-		var pk = $(val).parent().attr('class');
-		$.get('get_all_reply.ajax?pk='+pk, function(result){
-			replies = $.parseJSON(result);;
-			$.each(replies, function(index, board){
-				var $tr= $('<tr>');
-				$tr.append('<td></td><td colspan="5" class='+ board.pk+'>' + board.title + '</td>');
-				$selected_board.parent().parent().after($tr);
-			});
-		});
-	}
-	
-	function show_content(val){
-		$.each($boards, function(index, board){
-			if(board.title == $(val).text()){
-				$board = $(board);
-				$('#board_detail').html('');
-				$('#board_detail').append('<hr>');
-				$('#board_detail').append(board.content);
-				$('#board_detail').append('<hr><br>');
-				$('#board_detail').append('<input type="button" value="답글 달기" onclick="write_content()"/>');
-				$('#board_detail').append('<br>');
-			}
-		});
-	}
-	
-	function write_content(){
-		$.get('cafe/write_form.jsp', function(page){
+	function reply(pk){
+		$.get('cafe/content_write_form.jsp',function(page){
+			alert(page);
 			$('#write_form').html(page);
 		});
 	}
 	
-	function search_content(type, value){
-		if(type == 'title'){
-			$.post('get_category_board.ajax', {'category_name':category, 'string':value, 'type':type}, function(result){
-				set_board(result);
-			});
-		}else if(type == 'id'){
-			$.post('get_category_board.ajax?type=id', {'category_name':category, 'string':value, 'type':type}, function(result){
-				set_board(result);
-			});
-		}else if(type == 'name'){
-			$.post('get_category_board.ajax?type=name', {'category_name':category, 'string':value, 'type':type}, function(result){
-				set_board(result);
-			});
-		}
-		return false;
+	function select_reply(pk){
+		$.get('', function(){
+			
+		});
+	}
+	function write_board(){
+		$.get('cafe/content_write_form.jsp', function(page){
+			$('#write_form').html(page);	
+		});
 	}
 </script>
-<h2 id="content_board_category_title"></h2>
+<h2 id="content_board_category_title"><%= category.get("name")%></h2>
 	<div id="write_form"></div>
-	<div id="board_detail"></div>
-	<table border="1">
-		<thead>
-			<tr>
-				<th>글 번호</th>
-				<th>제목</th>
-				<th>이름</th>
-				<th>아이디</th>
-				<th>날짜</th>
-				<th>답글</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
+	<div id="board_detail">
+		<table border="1">
+		<tr>
+			<td>제목</td>
+			<td>아이디</td>
+			<td>이름</td>
+			<td>답글</td>
+			<td>날짜</td>
+		</tr>
+		<%for(int i=0; i<boards.size(); i++){ 
+			JSONObject board = (JSONObject)boards.get(i);
+		%>
+		<tr>
+			<td id="board_title">
+				<span onclick="select_title(this)"><%= board.get("title") %></span>
+			</td>
+			<td id="board_id">
+				<span><%= board.get("id") %></span>
+			</td>
+			<td id="board_name">
+				<span><%= board.get("name") %></span>
+			</td>
+			<td id="board_replies">
+				<span onclick="select_reply(<%= board.get("id") %>)"><%= board.get("replies") %></span>
+			</td>
+			<td id="board_date">
+				<span><%= board.get("created") %></span>
+			</td>
+		</tr>
+		<tr>
+			<td id="board_content" class='hide' colspan='4'>
+				<span><%= board.get("content") %>
+					<input type="button" onclick="reply(<%= board.get("pk") %>)" value="답글달기"/>
+				</span>
+			</td>
+		</tr>
+		<%} %>
+		</table>
+	</div>
+	<!-- 검색 -->
 	<select id="search_select">
 		<option value="title">제목</option>
 		<option value="id">아이디</option>
@@ -106,5 +92,5 @@
 		<input id="search_word" type="search" placeholder="검색"/>
 		<input type="submit" value="검색"/>
 	</form>
-	<button onclick="write_content()">글쓰기</button>
+	<button onclick="write_board()">글쓰기</button>
 </div>

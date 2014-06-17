@@ -2,6 +2,7 @@ package com.oneplace.ajax;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -9,6 +10,7 @@ import org.json.simple.JSONObject;
 import com.oneplace.application.Application;
 import com.oneplace.database.get.CafeDB;
 import com.oneplace.database.get.CafeMemberDB;
+import com.oneplace.database.get.CafeOrganizationDB;
 import com.util.kht.Ajax;
 
 public class CafeAjax extends Ajax{
@@ -47,6 +49,28 @@ public class CafeAjax extends Ajax{
 		case "make_cafe.ajax":
 			makeCafe(request, response);
 			break;
+		case "modify_cafe_organization.ajax":
+			modifyCafeOrganization(request, response);
+			break;
+		}
+	}
+
+	private void modifyCafeOrganization(HttpServletRequest request,
+			HttpServletResponse response) {
+		int pk = Integer.valueOf(request.getParameter("pk"));
+		String organizationUri = request.getParameter("organization_uri");
+		String joined = request.getParameter("joined");
+		HttpSession session = request.getSession();
+		JSONObject cafe = (JSONObject)session.getAttribute("cafe");
+		if((int)session.getAttribute("member_type") == 4 && cafe.get("uri").equals(organizationUri)){ // 유효성
+			CafeOrganizationDB db = new CafeOrganizationDB();
+			int col = db.updateData(pk, joined);
+			if(col > 0)
+				submit(true, response);
+			else{
+				submit(false, response);
+			}
+			db.close();
 		}
 	}
 

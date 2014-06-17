@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 
 import com.oneplace.database.get.CafeDB;
 import com.oneplace.database.get.CafeMemberDB;
+import com.oneplace.database.get.CafeOrganizationDB;
 import com.oneplace.database.get.CategoryDB;
 import com.util.kht.RequestURIParser;
 
@@ -34,6 +35,12 @@ public class Controller extends HttpServlet {
 		JSONArray categories = cadb.getAllCategoryArray(uri); 
 		JSONObject member = (JSONObject) request.getSession().getAttribute("member");
 		if(member != null){
+			if(Boolean.valueOf((String)cafe.get("is_organization"))){ // 기관이면
+				CafeOrganizationDB codb = new CafeOrganizationDB();
+				JSONArray cafes = codb.getCafeArray((String)cafe.get("uri")); // 소속 카페들
+				session.setAttribute("cafes", cafes);
+				codb.close();
+			}
 			CafeMemberDB cafemember = new CafeMemberDB();
 			JSONObject cafeMember = cafemember.getObject((String)cafe.get("uri"), (String)member.get("id")); // 카페 회원타입을 가져오기 위해서
 			cafemember.close();
@@ -48,4 +55,5 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("./");
 		}
 	}
+	
 }

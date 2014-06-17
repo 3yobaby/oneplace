@@ -1,6 +1,5 @@
 package com.oneplace.database.get;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -48,6 +47,13 @@ public class CafeDB extends DatabaseConnector{
 	/*
 	 * get
 	 */
+	
+	public JSONObject getCafeById(String id){
+		setSql("select * from cafe where manager_id=?");
+		setString(1, id);
+		return getJSONObject();
+	}
+	
 	public HashMap<String, JSONObject> getAllCafe() {
 		String sql = "select * from cafe";
 		setSql(sql);

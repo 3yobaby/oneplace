@@ -10,12 +10,12 @@ import com.util.kht.DatabaseConnector;
 
 public class CafeMemberDB extends DatabaseConnector{
 	// member_type
-	// 0 가입신청중 1 가입완료-회원 2 관리회원 3 관리자
+	// 0 default 1 가입신정충 2 가입완료, 회원 3 관리자 4 기관 관리자
 //	pk number primary key,
 //	  member_id varchar2(20),
 //	  cafe_uri varchar2(60)
 	
-	public boolean deleteMember(String id, String cafeUri) {
+	public int deleteMember(String id, String cafeUri) {
 		setSql("delete from member_joined_cafe where member_id=? and manager_id != ? and cafe_uri=?");
 		setString(1, id);
 		setString(2, id);

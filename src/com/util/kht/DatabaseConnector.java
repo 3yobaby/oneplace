@@ -113,14 +113,13 @@ public abstract class DatabaseConnector {
 		return 0;
 	}
 	
-	protected boolean deleteData(){
+	protected int deleteData(){
 		try {
-			pstmt.execute();
-			return true;
+			return pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 	
 	protected abstract JSONObject getJSONObjectFromResultset(ResultSet rs);

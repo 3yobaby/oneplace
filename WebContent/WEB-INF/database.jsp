@@ -67,6 +67,18 @@
 			$('#memberjoinedcafelist').html($('#memberjoinedcafelist').html()+text+"<hr>");
 		})
 	});
+	$.get('cafeorglist.data', function(result){
+		result = $.parseJSON(result);
+		$.each(result, function(index, val){
+			var text = "";
+			for(key in val){
+				text += key + ":";
+				text += val[key];
+				text += "<br>";
+			}
+			$('#cafeorglist').html($('#cafeorglist').html()+text+"<hr>");
+		})
+	});
 </script>
 </head>
 <body>
@@ -86,6 +98,9 @@
 	</div>
 	<div id="memberjoinedcafelist">
 	<h2>멤버=카페 관계 리스트</h2>
+	</div>
+	<div id="cafeorglist">
+	<h2>기관-카페 리스트</h2>
 	</div>
 </fieldset>
 </body>
